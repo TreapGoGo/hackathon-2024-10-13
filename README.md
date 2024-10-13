@@ -1,66 +1,22 @@
-## Foundry
+<center><H1>No Sandwich Swap</H1></center>
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+<center>by WHU Web3 Club</center>
 
-Foundry consists of:
+## 概述
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+这是一个抗 MEV 的 DEX ，使用**双曲集合竞价**的方式，将一段时间内的若干笔交易加总后无限细分并均匀交错排列，从而摊平了单笔交易的价格冲击效应，将 MEV 攻击者的交易分散至整个周期中使得套利收益大幅降低。
 
-## Documentation
+该 DEX 的意义在于：
 
-https://book.getfoundry.sh/
+1. 减少价格冲击，让实际成交价更加贴近公允价格
+2. 有效防范 MEV 攻击，使得三明治攻击变得无利可图
+3. 有效降低普通交易者遭遇的滑点，提高用户体验
+4. 抑制价格的波动性，减少 LP 遭遇的无常损失
+5. 通过治理代币激励机制，鼓励用户多多交易，提高市场流动性
 
-## Usage
+## 原理
 
-### Build
+设期初流动性池满足 $x_0 \times y_0=k$ 。对于每一个结算周期，流动性池收到的基准货币和计价货币数量分别为  $\{a_1, a_2, ..., a_A\}, \{b_1, b_2, ..., b_B\}$ ，设 $\displaystyle\alpha = \sum_{i=1}^A a_i, \beta = \sum_{i=1}^B b_i$ 。
 
-```shell
-$ forge build
-```
+将 $\alpha$ 和 $\beta$ 皆均分成 $N$ 个等份，然后将其交错均匀排列。
 
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```

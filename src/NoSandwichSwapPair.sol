@@ -2,8 +2,10 @@
 
 pragma solidity ^0.8.28;
 
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import {SandwichToken} from "./SandwichToken.sol";
 
 contract NoSandwichSwapPair is ReentrancyGuard {
     // State Variables
@@ -12,19 +14,21 @@ contract NoSandwichSwapPair is ReentrancyGuard {
     IERC20 immutable i_baseCurrencyContract;
     IERC20 immutable i_quoteCurrencyContract;
 
+    uint256 public i_settlementTimeInterval; // unit: second
+    uint256 public i_numberOfFragments;
+
     uint256 public baseCurrencyReserve;
     uint256 public quoteCurrencyReserve;
     uint256 public liquidity;
     mapping(address => uint256) public liquidityBalance;
-
-    uint256 public i_settlementTimeInterval; // unit: second
-    uint256 public i_numberOfFragments;
 
     address[] public baseCurrencyContributors;
     mapping(address => uint256) baseCurrencyContributions;
     address[] public quoteCurrencyContributors;
     mapping(address => uint256) quoteCurrencyContributions;
     uint256 lastSettlementTimestamp;
+
+    SandwichToken public sandwichToken;
 
     // Events
     event LiquidityAdded(
@@ -85,21 +89,23 @@ contract NoSandwichSwapPair is ReentrancyGuard {
 
     // Constructor
     constructor(
-        address baseCurrencyAddress,
-        address quoteCurrencyAddress,
-        uint256 settlementTimeInterval,
-        uint256 numberOfFragments
+        address _baseCurrencyAddress,
+        address _quoteCurrencyAddress,
+        uint256 _settlementTimeInterval,
+        uint256 _numberOfFragments
     ) {
-        i_baseCurrencyAddress = baseCurrencyAddress;
-        i_quoteCurrencyAddress = quoteCurrencyAddress;
+        i_baseCurrencyAddress = _baseCurrencyAddress;
+        i_quoteCurrencyAddress = _quoteCurrencyAddress;
         i_baseCurrencyContract = IERC20(i_baseCurrencyAddress);
         i_quoteCurrencyContract = IERC20(i_quoteCurrencyAddress);
 
-        i_settlementTimeInterval = settlementTimeInterval;
-        i_numberOfFragments = numberOfFragments;
+        i_settlementTimeInterval = _settlementTimeInterval;
+        i_numberOfFragments = _numberOfFragments;
 
         lastSettlementTimestamp = 0;
         liquidity = 0;
+
+        sandwichToken = new SandwichToken(address(this), 1 days, 1000 ether);
     }
 
     // External / Public Functions
@@ -358,6 +364,9 @@ contract NoSandwichSwapPair is ReentrancyGuard {
         }
         baseCurrencyContributors = new address[](0);
         quoteCurrencyContributors = new address[](0);
+
+        // mint SANDWICH for the trader who triggered settlement and paid extra gas
+        sandwichToken.mint(tx.origin);
 
         emit SettlementPerformed(
             BaseCurrencyOut,
