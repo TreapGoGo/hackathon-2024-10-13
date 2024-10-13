@@ -36,7 +36,11 @@ contract SimpleDEXTest is Test {
 
         console.log("Liquidity Minted:", liquidityMinted);
         console.log("Liquidity Balance:", dex.liquidityBalance(alice));
-        assertEq(dex.liquidityBalance(alice), liquidityMinted, "Liquidity mismatch");
+        assertEq(
+            dex.liquidityBalance(alice),
+            liquidityMinted,
+            "Liquidity mismatch"
+        );
         assertEq(dex.reserve1(), 100 ether, "Reserve1 mismatch");
         assertEq(dex.reserve2(), 100 ether, "Reserve2 mismatch");
 
@@ -88,9 +92,11 @@ contract SimpleDEXTest is Test {
 
 // Mock ERC20 token for testing
 contract MockERC20 is ERC20 {
-    constructor(string memory name, string memory symbol, uint256 initialSupply)
-        ERC20(name, symbol)
-    {
+    constructor(
+        string memory name,
+        string memory symbol,
+        uint256 initialSupply
+    ) ERC20(name, symbol) {
         _mint(msg.sender, initialSupply);
     }
 
