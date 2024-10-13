@@ -64,6 +64,7 @@ contract SimpleDEX {
 
         if (liquidity == 0) {
             liquidity = sqrt(amount1 * amount2);
+            liquidityMinted = liquidity;/////
             liquidityBalance[msg.sender] = liquidity;
         } else {
             uint256 liquidity1 = (amount1 * liquidity) / reserve1;
