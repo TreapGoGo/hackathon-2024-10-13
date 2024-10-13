@@ -15,24 +15,10 @@ contract SimpleDEX {
 
     mapping(address => uint256) public liquidityBalance;
 
-    event AddLiquidity(
-        address indexed provider,
-        uint256 amount1,
-        uint256 amount2,
-        uint256 liquidityMinted
-    );
-    event RemoveLiquidity(
-        address indexed provider,
-        uint256 amount1,
-        uint256 amount2,
-        uint256 liquidityBurned
-    );
+    event AddLiquidity(address indexed provider, uint256 amount1, uint256 amount2, uint256 liquidityMinted);
+    event RemoveLiquidity(address indexed provider, uint256 amount1, uint256 amount2, uint256 liquidityBurned);
     event Swap(
-        address indexed swapper,
-        address indexed tokenIn,
-        uint256 amountIn,
-        address indexed tokenOut,
-        uint256 amountOut
+        address indexed swapper, address indexed tokenIn, uint256 amountIn, address indexed tokenOut, uint256 amountOut
     );
 
     constructor(address _token1, address _token2) {
@@ -43,24 +29,12 @@ contract SimpleDEX {
     }
 
     // 存入流动性
-    function addLiquidity(
-        uint256 amount1,
-        uint256 amount2
-    ) external returns (uint256 liquidityMinted) {
-        require(
-            amount1 > 0 && amount2 > 0,
-            "Amounts must be greater than zero"
-        );
+    function addLiquidity(uint256 amount1, uint256 amount2) external returns (uint256 liquidityMinted) {
+        require(amount1 > 0 && amount2 > 0, "Amounts must be greater than zero");
 
         // 将代币转入合约
-        require(
-            token1.transferFrom(msg.sender, address(this), amount1),
-            "Transfer token1 failed"
-        );
-        require(
-            token2.transferFrom(msg.sender, address(this), amount2),
-            "Transfer token2 failed"
-        );
+        require(token1.transferFrom(msg.sender, address(this), amount1), "Transfer token1 failed");
+        require(token2.transferFrom(msg.sender, address(this), amount2), "Transfer token2 failed");
 
         if (liquidity == 0) {
             liquidity = sqrt(amount1 * amount2);
@@ -81,17 +55,9 @@ contract SimpleDEX {
     }
 
     // 撤出流动性
-    function removeLiquidity(
-        uint256 liquidityAmount
-    ) external returns (uint256 amount1, uint256 amount2) {
-        require(
-            liquidityAmount > 0,
-            "Liquidity amount must be greater than zero"
-        );
-        require(
-            liquidityBalance[msg.sender] >= liquidityAmount,
-            "Insufficient liquidity balance"
-        );
+    function removeLiquidity(uint256 liquidityAmount) external returns (uint256 amount1, uint256 amount2) {
+        require(liquidityAmount > 0, "Liquidity amount must be greater than zero");
+        require(liquidityBalance[msg.sender] >= liquidityAmount, "Insufficient liquidity balance");
 
         amount1 = (liquidityAmount * reserve1) / liquidity;
         amount2 = (liquidityAmount * reserve2) / liquidity;
@@ -108,14 +74,8 @@ contract SimpleDEX {
     }
 
     // 交换代币
-    function swap(
-        address tokenIn,
-        uint256 amountIn
-    ) external returns (uint256 amountOut) {
-        require(
-            tokenIn == address(token1) || tokenIn == address(token2),
-            "Invalid token"
-        );
+    function swap(address tokenIn, uint256 amountIn) external returns (uint256 amountOut) {
+        require(tokenIn == address(token1) || tokenIn == address(token2), "Invalid token");
         require(amountIn > 0, "Amount must be greater than zero");
 
         bool isToken1 = tokenIn == address(token1);
@@ -125,10 +85,7 @@ contract SimpleDEX {
         uint256 reserveOut = isToken1 ? reserve2 : reserve1;
 
         // 转入代币
-        require(
-            inputToken.transferFrom(msg.sender, address(this), amountIn),
-            "Transfer failed"
-        );
+        require(inputToken.transferFrom(msg.sender, address(this), amountIn), "Transfer failed");
 
         // 计算输出量，使用恒定乘积公式，添加0.3%手续费
         uint256 amountInWithFee = amountIn * 997;
@@ -150,20 +107,14 @@ contract SimpleDEX {
         // 转出代币
         require(outputToken.transfer(msg.sender, amountOut), "Transfer failed");
 
-        emit Swap(
-            msg.sender,
-            tokenIn,
-            amountIn,
-            address(outputToken),
-            amountOut
-        );
+        emit Swap(msg.sender, tokenIn, amountIn, address(outputToken), amountOut);
     }
 
     // 辅助函数：计算平方根
-    function sqrt(uint y) internal pure returns (uint z) {
+    function sqrt(uint256 y) internal pure returns (uint256 z) {
         if (y > 3) {
             z = y;
-            uint x = y / 2 + 1;
+            uint256 x = y / 2 + 1;
             while (x < z) {
                 z = x;
                 x = (y / x + x) / 2;

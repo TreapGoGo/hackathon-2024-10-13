@@ -12,11 +12,10 @@ contract SandwichToken is ERC20, Ownable {
     uint256 public lastDecayTimestamp;
     uint256 public mintAmount;
 
-    constructor(
-        address _owner,
-        uint256 _halflife,
-        uint256 _initialMintAmount
-    ) Ownable(_owner) ERC20("Sandwich Token", "SANDWICH") {
+    constructor(address _owner, uint256 _halflife, uint256 _initialMintAmount)
+        Ownable(_owner)
+        ERC20("Sandwich Token", "SANDWICH")
+    {
         i_startTimestamp = block.timestamp;
         i_halflife = _halflife;
 
