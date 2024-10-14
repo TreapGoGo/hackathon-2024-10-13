@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Trade from '../views/Trade.vue'
-import Explore from '../views/Explore.vue'
 const routes = [
     {
         path: '/',
