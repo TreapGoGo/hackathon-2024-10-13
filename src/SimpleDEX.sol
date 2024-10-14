@@ -110,6 +110,14 @@ contract SimpleDEX {
         emit Swap(msg.sender, tokenIn, amountIn, address(outputToken), amountOut);
     }
 
+    function getPriceInWei() public view returns (uint256) {
+        return (reserve2 * 1 ether) / reserve1;
+    }
+
+    function getConstantProduct() public view returns (uint256) {
+        return reserve1 * reserve2;
+    }
+
     // 辅助函数：计算平方根
     function sqrt(uint256 y) internal pure returns (uint256 z) {
         if (y > 3) {

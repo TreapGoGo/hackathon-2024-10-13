@@ -48,7 +48,7 @@ contract DeployNoSandwichSwapPair is Script {
 
         address payable myOwnAddress = payable(0x15AfABaA426334636008Bc15805760716E8b5c5E);
         // transfer to myOwnAddress 1000 ether
-        // myOwnAddress.transfer(100 ether);
+        // myOwnAddress.transfer(10 ether);
         baseCurrency.mint(myOwnAddress, 1000 ether);
         quoteCurrency.mint(myOwnAddress, 1000 ether);
 
