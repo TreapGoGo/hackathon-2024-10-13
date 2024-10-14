@@ -33,7 +33,7 @@
     <div class="second-section">
     <div class="content-container">
       <div class="image-box">
-        <img src="../assets/未命名的设计.png" alt="Informative Image">
+        <img src="../assets/figure1.png" alt="Informative Image">
       </div>
       <div class="text-box">
         <h2>What is MEV?</h2>
@@ -49,14 +49,12 @@
   <div class="second-section">
     <div class="content-container">
       <div class="image-box">
-        <img src="../assets/未命名的设计.png" alt="Informative Image">
+        <img src="../assets/figure2.png" alt="Informative Image">
       </div>
       <div class="text-box">
-        <h2>What is MEV?</h2>
+        <h2>What we do ?</h2>
         <p>
-          Miner Extractable Value (MEV) refers to the maximum value that miners 
-          can extract from block production, by including, excluding, and 
-          changing the order of transactions.
+          We split the trades within the trading cycle into n equal parts for buy and sell operations to avoid MEV attacks.
         </p>
         <button class="learn-more-btn">Learn More</button>
       </div>
@@ -64,29 +62,32 @@
   </div>
   <div class="explanation">
     <div class="explanation-item hidden">
-      <h2>hello</h2>
-      <p></p>
+      <h2>What is a Miner ?</h2>
+      <p>A miner is a participant in blockchain networks who validates transactions and adds them to the blockchain by solving complex cryptographic puzzles. In return, miners are rewarded with cryptocurrency and transaction fees.
+      </p>
       <a href="https://zh.wikipedia.org/wiki/%E4%BA%94%E8%A1%8C" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
     <div class="explanation-item hidden">
-      <h2>hello</h2>
-      <p></p>
+      <h2>What is a Transaction ?</h2>
+      <p>A transaction in blockchain is a transfer of data or value, like sending cryptocurrency between users. It is processed by miners and added to the blockchain, ensuring its security and immutability.
+      </p>
       <a href="https://zh.wikipedia.org/zh-cn/%E9%98%B4%E9%98%B3" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
     <div class="explanation-item hidden">
-      <h2>hello</h2>
-      <p></p>
+      <h2>What is MEV ?</h2>
+      <p>MEV (Miner Extractable Value) refers to the profit miners can make by manipulating the order of transactions in a block, such as by front-running, reordering, or including specific transactions to maximize their earnings.
+      </p>
       <a href="https://zh.wikipedia.org/wiki/%E5%85%AB%E5%8D%A6" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
     <div class="explanation-item hidden download">
-      <h2 style="color: black;">hello</h2>
-      <p style="color: black;"></p>
+      <h2 style="color: black;">What is NoSandwich ?</h2>
+      <p style="color: black;">NoSandwichSwap is an innovative decentralized exchange (DEX) designed to mitigate MEV (Miner Extractable Value) attacks through a novel trading mechanism known as hyperbolic batch auctions. </p>
       <a>
         <button class="cta-button whitepaper">Whitepaper</button>
       </a>
@@ -107,13 +108,13 @@
   }
   @keyframes purple-glow {
     0% {
-      box-shadow: 0 0 15px 5px rgba(128, 0, 128, 0.4);
+      box-shadow: 0 0 15px 5px rgba(61, 109, 121, 0.4);
     }
     50% {
-      box-shadow: 0 0 30px 10px rgba(255, 0, 255, 0.7);
+      box-shadow: 0 0 30px 10px rgba(23, 47, 124, 0.7);
     }
     100% {
-      box-shadow: 0 0 15px 5px rgba(128, 0, 128, 0.4);
+      box-shadow: 0 0 15px 5px rgba(92, 15, 165, 0.4);
     }
   }
   
@@ -134,7 +135,7 @@
     font-size: 2.5vw;
     margin-bottom: 5vh;
     letter-spacing: 0.1rem;
-    background: linear-gradient(90deg, rgba(128, 0, 128, 1) 0%, rgba(255, 0, 255, 1) 100%);
+    background: linear-gradient(90deg, rgb(34, 62, 94) 0%, rgb(80, 141, 197) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -163,7 +164,7 @@
   
   .input-label {
     font-size: 1.2vw;
-    color: #ff00ff;
+    color: #168ddb;
     margin-bottom: 1vh;
   }
   
@@ -192,12 +193,12 @@
     top: 50%;
     transform: translateY(-50%);
     border: 6px solid transparent;
-    border-top-color: #ff00ff;
+    border-top-color: #168ddb;
   }
 
   
   .get-started-btn {
-    background-color: #ff00ff;
+    background-color: #168ddb;
     color: white;
     padding: 1vh 3vw;
     font-size: 1.0 vw;
@@ -213,7 +214,7 @@
   }
   
   .description h1{
-    background: linear-gradient(90deg, rgba(128, 0, 128, 1) 0%, rgba(255, 0, 255, 1) 100%);;
+    background: linear-gradient(90deg, rgb(34, 62, 94) 0%, rgb(80, 141, 197) 100%);
     margin-top: 3rem;
     font-size: 1.2rem;
     max-width: 400px;
@@ -310,7 +311,7 @@
 }
 
 .learn-more-btn {
-  background-color: #ff00ff;
+  background-color: #168ddb;
   color: white;
   padding: 0.8rem 2rem;
   margin-top: 1.5rem;
@@ -389,11 +390,11 @@
 
 .learn-more:hover, .whitepaper:hover {
   background: #fff;
-  color: #a24dff;
+  color: #4dc7ff;
 }
 
 .download {
-  background-color: #a24dff;
+  background-color: #168ddb;
   color: #0a0a0a;
 }
 
@@ -422,7 +423,7 @@
   }
 }
 .cta-button {
-  background: linear-gradient(45deg, #c22dcf, #9a1dd4);
+  background: linear-gradient(45deg, #245868, #180775);
   border: none;
   color: #fff;
   padding: 1.5vh 4vw; /* Adjust padding for better spacing */
@@ -433,7 +434,7 @@
   cursor: pointer;
   transition: all 0.4s ease;
   position: relative;
-  box-shadow: 0 8px 15px rgba(161, 23, 202, 0.6);
+  box-shadow: 0 8px 15px rgba(53, 118, 172, 0.6);
   border-radius: 50px;
   z-index: 1;
   overflow: hidden;
