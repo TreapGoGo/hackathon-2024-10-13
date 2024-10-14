@@ -3,6 +3,12 @@
     <div class="chart-container">
       <div ref="chart" style="width: 100%; height: 100%;"></div>
     </div>
+    <div class="progress-bar-container">
+      <div class="progress-bar">
+        <div class="progress-bar-red" :style="{ height: redHeight + '%' }"></div>
+        <div class="progress-bar-blue"></div>
+      </div>
+    </div>
     <div class="trade-container">
       <h2>buy or sell</h2>
       <div class="trade-operations">
@@ -131,6 +137,44 @@
     margin-top: 2rem;
     color: #00eaff;
   }
+
+  .progress-bar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 70vh;
+    margin-top: 15vh;
+    margin-right: 2rem;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 100%;
+    background-color: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(78, 109, 156, 0.7); /* 为整体进度条容器加上阴影 */
+  }
+
+  .progress-bar-red {
+    background-color: #ff4b4b; /* 亮红色 */
+    transition: height 0.5s ease;
+    box-shadow: 0 0 15px rgba(128, 102, 102, 0.8), /* 荧光红色调 */
+                0 0 30px rgba(124, 59, 59, 0.6),
+                0 0 45px rgba(104, 12, 12, 0.4);
+  }
+
+  .progress-bar-blue {
+    flex-grow: 1;
+    background-color: #00aaff; /* 亮蓝色 */
+    box-shadow: 0 0 15px rgba(94, 105, 110, 0.8), /* 荧光蓝色调 */
+                0 0 30px rgba(56, 108, 134, 0.6),
+                0 0 45px rgba(17, 119, 170, 0.4);
+  }
+
 </style>
 
 <script>
@@ -155,6 +199,7 @@ export default {
       tokenx_address: '0x5FbDB2315678afecb367f032d93F642f64180aa3', // x的地址
       tokeny_address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512', // y的地址
       useRandomPrice: false, // 控制是否使用随机价格
+      redHeight: 50,
       contractABI: [
     {
         "constant": true,
@@ -491,7 +536,7 @@ async buy() {
 
   try {
     const amountToBuy = this.quantity;
-
+    this.redHeight = Math.min(this.redHeight - 10, 100);
     // 调用 swap 函数，传入 tokenX_address (使用 X 购买 Y)
     await this.swap(this.tokeny_address, amountToBuy);
   } catch (error) {
@@ -506,6 +551,7 @@ async sell() {
 
   try {
     const amountToSell = this.quantity;
+    this.redHeight = Math.max(this.redHeight + 10, 0);
     await this.swap(this.tokenx_address, amountToSell);
 
   } catch (error) {
@@ -515,6 +561,10 @@ async sell() {
     updateChart() {
       this.fetchPriceFromContract().then(() => {
         this.data.push(parseFloat(this.price)); // 将新的价格加入数据数组
+        if(Math.abs(this.data[this.data.length-2]-this.data[this.data.length-1])>0.001)
+      {
+        this.redHeight=50
+      }
         this.data.shift(); // 移除最早的一个数据
         const newTimeLabels = this.generateTimeLabels();
         this.chart.setOption({
