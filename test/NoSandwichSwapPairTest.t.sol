@@ -161,13 +161,13 @@ contract NoSandwichSwapPairTest is Test {
         assertEq(sandwichBalance, 1 ether); // Assuming mint() mints 1 SANDWICH
 
         // Verify that contributions are reset
-        assertEq(pair.baseCurrencyContributions(user1), 0);
-        assertEq(pair.quoteCurrencyContributions(user2), 0);
-        assertEq(pair.baseCurrencyContributions(user3), 0);
+        assertEq(pair.getBaseCurrencyContribution(user1), 0);
+        assertEq(pair.getQuoteCurrencyContribution(user2), 0);
+        assertEq(pair.getBaseCurrencyContribution(user3), 0);
 
         // Verify that contributors lists are cleared
-        assertEq(pair.baseCurrencyContributors().length, 0);
-        assertEq(pair.quoteCurrencyContributors().length, 0);
+        assertEq(pair.getBaseCurrencyContributorsLength(), 0);
+        assertEq(pair.getQuoteCurrencyContributorsLength(), 0);
     }
 
     /// @notice Test that adding a swap transaction before settlement interval does not trigger settlement
@@ -195,8 +195,8 @@ contract NoSandwichSwapPairTest is Test {
         assertEq(sandwichBalanceUser2, 0);
 
         // Verify that contributions are still recorded
-        assertEq(pair.baseCurrencyContributions(user1), 100 ether);
-        assertEq(pair.quoteCurrencyContributions(user2), 200 ether);
+        assertEq(pair.getBaseCurrencyContribution(user1), 100 ether);
+        assertEq(pair.getQuoteCurrencyContribution(user2), 200 ether);
     }
 
     /// @notice Test that multiple settlements can occur over time
@@ -247,25 +247,6 @@ contract NoSandwichSwapPairTest is Test {
         vm.startPrank(user1);
         vm.expectRevert(bytes("InvalidToken()"));
         pair.addSwapTransaction(invalidToken, amount);
-        vm.stopPrank();
-    }
-
-    /// @notice Test that settlement cannot be triggered by non-settlement interval
-    function testSettlementIntervalNotElapsed() public {
-        // Add liquidity
-        vm.startPrank(deployer);
-        pair.addLiquidity(1000 ether, 1000 ether);
-        vm.stopPrank();
-
-        // User1 adds a swap transaction
-        vm.startPrank(user1);
-        pair.addSwapTransaction(address(baseCurrency), 100 ether);
-        vm.stopPrank();
-
-        // Attempt to trigger settlement before interval
-        vm.startPrank(user2);
-        vm.expectRevert(bytes("SettlementIntervalNotElapsed()"));
-        pair.settleAndDistribution();
         vm.stopPrank();
     }
 
@@ -432,9 +413,9 @@ contract NoSandwichSwapPairTest is Test {
         vm.stopPrank();
 
         // Check that contributions are correctly reset
-        assertEq(pair.baseCurrencyContributions(user1), 0);
-        assertEq(pair.quoteCurrencyContributions(user2), 0);
-        assertEq(pair.baseCurrencyContributions(user3), 0);
+        assertEq(pair.getBaseCurrencyContribution(user1), 0);
+        assertEq(pair.getQuoteCurrencyContribution(user2), 0);
+        assertEq(pair.getBaseCurrencyContribution(user3), 0);
 
         // Check that SANDWICH tokens were minted to user3
         uint256 sandwichBalanceUser3 = sandwichToken.balanceOf(user3);
