@@ -12,12 +12,7 @@ const routes = [
         path: '/trade',
         name: 'trade',
         component: Trade
-    },
-    {
-        path: '/explore',
-        name: 'explore',
-        component: Explore
-    },
+    }
 ]
 
 const router = createRouter({
