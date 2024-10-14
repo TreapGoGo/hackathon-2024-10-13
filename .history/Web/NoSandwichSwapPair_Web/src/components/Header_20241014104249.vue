@@ -72,7 +72,7 @@ export default {
     background-color: #000;
     color: #fff;
     height: 10vh;
-    width: 100%;
+    width: 90%;
     position: fixed;
     z-index: 1000;
   }
@@ -119,6 +119,7 @@ export default {
     align-items: center;
     flex: 1;
     justify-content: flex-end;
+    
   }
 
 .connect-btn {
@@ -130,7 +131,7 @@ export default {
   color: #fff;
   cursor: pointer;
   transition: transform 0.1s ease, background-color 0.3s ease;
-  margin-right: 5vw;
+  margin-left: 2vw;
 }
 
 .connect-btn:hover {

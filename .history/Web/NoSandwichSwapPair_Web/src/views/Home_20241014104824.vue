@@ -399,6 +399,7 @@
 
 .explanation-item p {
   font-size: 1.0vw; /* Responsive font size */
+  font-family: 'Poppins',"SimSun";
   color: #a1a1a1;
   margin: 1vh 0 2vh; /* Adjust margin using vh */
   line-height: 1.5;

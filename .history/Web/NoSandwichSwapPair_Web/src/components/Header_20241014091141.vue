@@ -56,14 +56,13 @@ export default {
     font-style: normal;
   }
   @font-face {
-    font-family: 'Montserrat';
-    src: url('../assets/fonts/Montserrat/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
+    font-family: 'Protest_Strike';
+    src: url('../assets/fonts/Protest_Strike/Protest_Strike/ProtestStrike-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
   }
   *{
-    font-family: Montserrat;
-    font-weight: bold;
+    font-family: Protest_Strike;
   }
   .header {
     display: flex;
@@ -72,9 +71,7 @@ export default {
     background-color: #000;
     color: #fff;
     height: 10vh;
-    width: 100%;
-    position: fixed;
-    z-index: 1000;
+    padding: 0 20px;
   }
   
   .logo {
@@ -111,7 +108,6 @@ export default {
 
   .nav a:hover {
     color: #a24dff;
-    left:5vw;
   }
   
   .actions {
@@ -130,7 +126,6 @@ export default {
   color: #fff;
   cursor: pointer;
   transition: transform 0.1s ease, background-color 0.3s ease;
-  margin-right: 5vw;
 }
 
 .connect-btn:hover {

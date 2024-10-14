@@ -46,52 +46,37 @@
       </div>
     </div>
   </div>
-  <div class="second-section">
-    <div class="content-container">
-      <div class="image-box">
-        <img src="../assets/未命名的设计.png" alt="Informative Image">
-      </div>
-      <div class="text-box">
-        <h2>What is MEV?</h2>
-        <p>
-          Miner Extractable Value (MEV) refers to the maximum value that miners 
-          can extract from block production, by including, excluding, and 
-          changing the order of transactions.
-        </p>
-        <button class="learn-more-btn">Learn More</button>
-      </div>
-    </div>
-  </div>
   <div class="explanation">
     <div class="explanation-item hidden">
-      <h2>hello</h2>
+      <h2></h2>
       <p></p>
       <a href="https://zh.wikipedia.org/wiki/%E4%BA%94%E8%A1%8C" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
     <div class="explanation-item hidden">
-      <h2>hello</h2>
+      <h2></h2>
       <p></p>
       <a href="https://zh.wikipedia.org/zh-cn/%E9%98%B4%E9%98%B3" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
     <div class="explanation-item hidden">
-      <h2>hello</h2>
-      <p></p>
+      <h2></h2>
+      <p>{{ translatedText.baGuaDescription }}</p>
       <a href="https://zh.wikipedia.org/wiki/%E5%85%AB%E5%8D%A6" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
     <div class="explanation-item hidden download">
-      <h2 style="color: black;">hello</h2>
-      <p style="color: black;"></p>
+      <h2 style="color: black;">{{ translatedText.whitepaperTitle }}</h2>
+      <p style="color: black;">{{ translatedText.whitepaperDescription }}</p>
       <a>
         <button class="cta-button whitepaper">Whitepaper</button>
       </a>
     </div>
   </div>
+</template>
   </template>
   
   <style scoped>
@@ -325,192 +310,6 @@
   transform: scale(1.1);
 }
 
-.explanation {
-  display: flex;
-  flex-direction: column; /* Change to column layout for smaller screens */
-  background-color: #0a0a0a;
-  padding-bottom: 1vh;
-  height: 90vh; /* Remove fixed height */
-}
 
-.explanation-item {
-  display: flex; 
-  flex-direction: column; 
-  justify-content: space-between;
-  margin-top: 5vh; /* Adjust margin using vh */
-  width: 100%; /* Full width on smaller screens */
-  background-color: #0a0a0a;
-  text-align: center;
-  border-bottom: 1px solid #444; /* Change border to bottom for column layout */
-  padding: 1vh 1vw; /* Adjust padding for better spacing */
-  color: #fff;
-  position: relative;
-  box-sizing: border-box;
-}
-
-.explanation-item:last-child {
-  border-bottom: none; 
-}
-
-.hidden {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.explanation-item.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.explanation-item h2 {
-  font-size: 1.5vw; /* Responsive font size */
-  margin-bottom: 2vh; 
-  color: #fff;
-}
-
-.learn-more, .whitepaper {
-  background: #a24dff;
-  border: none;
-  color: #0a0a0a;
-  padding: 1vh 2vw; /* Adjust padding for better spacing */
-  font-size: 1vw; /* Responsive font size */
-  cursor: pointer;
-  transition: background 0.3s ease;
-  text-transform: uppercase;
-  margin-top: auto;
-  margin-bottom: 1vh;
-}
-
-.whitepaper {
-  background-color: #0a0a0a;
-  color: white;
-}
-
-.learn-more:hover, .whitepaper:hover {
-  background: #fff;
-  color: #a24dff;
-}
-
-.download {
-  background-color: #a24dff;
-  color: #0a0a0a;
-}
-
-.explanation-item p {
-  font-size: 1.0vw; /* Responsive font size */
-  color: #a1a1a1;
-  margin: 1vh 0 2vh; /* Adjust margin using vh */
-  line-height: 1.5;
-  text-align: left;
-}
-
-@media (min-width: 769px) {
-  .explanation {
-    flex-direction: row; /* Change to row layout for larger screens */
-    height: 88vh; /* Set height for larger screens */
-  }
-
-  .explanation-item {
-    width: 25%; /* Set width for row layout */
-    border-right: 0.11vh solid #444; /* Change border to right for row layout */
-    border-bottom: none; /* Remove bottom border for row layout */
-  }
-
-  .explanation-item:last-child {
-    border-right: none; 
-  }
-}
-.cta-button {
-  background: linear-gradient(45deg, #c22dcf, #9a1dd4);
-  border: none;
-  color: #fff;
-  padding: 1.5vh 4vw; /* Adjust padding for better spacing */
-  font-size: 1.2vw; /* Responsive font size */
-  font-family: 'ProtestGuerrilla-Regular', "SimSun";
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  position: relative;
-  box-shadow: 0 8px 15px rgba(161, 23, 202, 0.6);
-  border-radius: 50px;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.cta-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-  transition: width 0.4s ease;
-  z-index: -1;
-}
-
-.cta-button:hover::before {
-  width: 100%;
-}
-
-.cta-button:hover {
-  color: #0a0a0a;
-  box-shadow: 0 8px 30px rgba(206, 16, 196, 0.8);
-  transform: translateY(-5px);
-}
   </style>
-<script>
-export default {
-mounted() {
-    // 在 mounted 钩子中调用 Intersection Observer 的设置函数，确保在每次导航时初始化
-    this.setupIntersectionObserver();
-  },
-methods: {
-    setupIntersectionObserver() {
-      const items = document.querySelectorAll('.explanation-item');
-      const thresholds = [0.25, 0.5, 0.75, 0.95];
-      const delay = 100;
-
-      // 在设置观察者之前重置可见性为 hidden
-      items.forEach(item => item.classList.remove('visible'));
-
-      // 创建一个新的 Intersection Observer
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const ratio = entry.intersectionRatio;
-
-              // 根据当前的曝光率显示多少项
-              for (let i = 0; i < thresholds.length; i++) {
-                if (ratio >= thresholds[i]) {
-                  this.showItemsWithDelay(items, i + 1);
-                }
-              }
-            }
-          });
-        },
-        {
-          threshold: thresholds,
-        }
-      );
-
-      // 观察要显示的元素
-      observer.observe(document.querySelector('.explanation'));
-    },
-    showItemsWithDelay(items, count) {
-      for (let i = 0; i < items.length; i++) {
-        if (i < count) {
-          setTimeout(() => {
-            items[i].classList.add('visible');
-          }, i * 100);
-        } else {
-          items[i].classList.remove('visible');
-        }
-      }
-    }
-}
-}
-</script>
+  

@@ -46,22 +46,6 @@
       </div>
     </div>
   </div>
-  <div class="second-section">
-    <div class="content-container">
-      <div class="image-box">
-        <img src="../assets/未命名的设计.png" alt="Informative Image">
-      </div>
-      <div class="text-box">
-        <h2>What is MEV?</h2>
-        <p>
-          Miner Extractable Value (MEV) refers to the maximum value that miners 
-          can extract from block production, by including, excluding, and 
-          changing the order of transactions.
-        </p>
-        <button class="learn-more-btn">Learn More</button>
-      </div>
-    </div>
-  </div>
   <div class="explanation">
     <div class="explanation-item hidden">
       <h2>hello</h2>
@@ -367,10 +351,11 @@
   font-size: 1.5vw; /* Responsive font size */
   margin-bottom: 2vh; 
   color: #fff;
+  font-family: "ProtestGuerrilla-Regular","SimSun";
 }
 
 .learn-more, .whitepaper {
-  background: #a24dff;
+  background: #ff8c00;
   border: none;
   color: #0a0a0a;
   padding: 1vh 2vw; /* Adjust padding for better spacing */
@@ -383,22 +368,23 @@
 }
 
 .whitepaper {
-  background-color: #0a0a0a;
+  background-color: #000;
   color: white;
 }
 
 .learn-more:hover, .whitepaper:hover {
   background: #fff;
-  color: #a24dff;
+  color: #ff8c00;
 }
 
 .download {
-  background-color: #a24dff;
-  color: #0a0a0a;
+  background-color: #ff8c00;
+  color: #000;
 }
 
 .explanation-item p {
   font-size: 1.0vw; /* Responsive font size */
+  font-family: 'Poppins',"SimSun";
   color: #a1a1a1;
   margin: 1vh 0 2vh; /* Adjust margin using vh */
   line-height: 1.5;
@@ -456,7 +442,7 @@
 }
 
 .cta-button:hover {
-  color: #0a0a0a;
+  color: #000;
   box-shadow: 0 8px 30px rgba(206, 16, 196, 0.8);
   transform: translateY(-5px);
 }

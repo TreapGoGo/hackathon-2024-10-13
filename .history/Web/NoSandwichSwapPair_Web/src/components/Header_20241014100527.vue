@@ -73,7 +73,8 @@ export default {
     color: #fff;
     height: 10vh;
     width: 100%;
-    position: fixed;
+    padding: 0 20px;
+    position: sticky;
     z-index: 1000;
   }
   
@@ -111,7 +112,6 @@ export default {
 
   .nav a:hover {
     color: #a24dff;
-    left:5vw;
   }
   
   .actions {
@@ -130,7 +130,6 @@ export default {
   color: #fff;
   cursor: pointer;
   transition: transform 0.1s ease, background-color 0.3s ease;
-  margin-right: 5vw;
 }
 
 .connect-btn:hover {

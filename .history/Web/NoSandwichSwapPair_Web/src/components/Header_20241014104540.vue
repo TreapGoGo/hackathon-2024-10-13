@@ -130,7 +130,7 @@ export default {
   color: #fff;
   cursor: pointer;
   transition: transform 0.1s ease, background-color 0.3s ease;
-  margin-right: 5vw;
+  margin-right: 10vw;
 }
 
 .connect-btn:hover {

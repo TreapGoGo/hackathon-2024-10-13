@@ -46,46 +46,30 @@
       </div>
     </div>
   </div>
-  <div class="second-section">
-    <div class="content-container">
-      <div class="image-box">
-        <img src="../assets/未命名的设计.png" alt="Informative Image">
-      </div>
-      <div class="text-box">
-        <h2>What is MEV?</h2>
-        <p>
-          Miner Extractable Value (MEV) refers to the maximum value that miners 
-          can extract from block production, by including, excluding, and 
-          changing the order of transactions.
-        </p>
-        <button class="learn-more-btn">Learn More</button>
-      </div>
-    </div>
-  </div>
   <div class="explanation">
     <div class="explanation-item hidden">
-      <h2>hello</h2>
+      <h2></h2>
       <p></p>
       <a href="https://zh.wikipedia.org/wiki/%E4%BA%94%E8%A1%8C" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
     <div class="explanation-item hidden">
-      <h2>hello</h2>
+      <h2></h2>
       <p></p>
       <a href="https://zh.wikipedia.org/zh-cn/%E9%98%B4%E9%98%B3" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
     <div class="explanation-item hidden">
-      <h2>hello</h2>
+      <h2></h2>
       <p></p>
       <a href="https://zh.wikipedia.org/wiki/%E5%85%AB%E5%8D%A6" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
     <div class="explanation-item hidden download">
-      <h2 style="color: black;">hello</h2>
+      <h2 style="color: black;"></h2>
       <p style="color: black;"></p>
       <a>
         <button class="cta-button whitepaper">Whitepaper</button>
@@ -328,9 +312,9 @@
 .explanation {
   display: flex;
   flex-direction: column; /* Change to column layout for smaller screens */
-  background-color: #0a0a0a;
+  background-color: #000;
   padding-bottom: 1vh;
-  height: 90vh; /* Remove fixed height */
+  height: 85vh; /* Remove fixed height */
 }
 
 .explanation-item {
@@ -339,7 +323,7 @@
   justify-content: space-between;
   margin-top: 5vh; /* Adjust margin using vh */
   width: 100%; /* Full width on smaller screens */
-  background-color: #0a0a0a;
+  background-color: #000;
   text-align: center;
   border-bottom: 1px solid #444; /* Change border to bottom for column layout */
   padding: 1vh 1vw; /* Adjust padding for better spacing */
@@ -367,12 +351,13 @@
   font-size: 1.5vw; /* Responsive font size */
   margin-bottom: 2vh; 
   color: #fff;
+  font-family: "ProtestGuerrilla-Regular","SimSun";
 }
 
 .learn-more, .whitepaper {
-  background: #a24dff;
+  background: #ff8c00;
   border: none;
-  color: #0a0a0a;
+  color: #000;
   padding: 1vh 2vw; /* Adjust padding for better spacing */
   font-size: 1vw; /* Responsive font size */
   cursor: pointer;
@@ -383,22 +368,23 @@
 }
 
 .whitepaper {
-  background-color: #0a0a0a;
+  background-color: #000;
   color: white;
 }
 
 .learn-more:hover, .whitepaper:hover {
   background: #fff;
-  color: #a24dff;
+  color: #ff8c00;
 }
 
 .download {
-  background-color: #a24dff;
-  color: #0a0a0a;
+  background-color: #ff8c00;
+  color: #000;
 }
 
 .explanation-item p {
   font-size: 1.0vw; /* Responsive font size */
+  font-family: 'Poppins',"SimSun";
   color: #a1a1a1;
   margin: 1vh 0 2vh; /* Adjust margin using vh */
   line-height: 1.5;
@@ -422,7 +408,7 @@
   }
 }
 .cta-button {
-  background: linear-gradient(45deg, #c22dcf, #9a1dd4);
+  background: linear-gradient(45deg, #ff8c00, #ff005a);
   border: none;
   color: #fff;
   padding: 1.5vh 4vw; /* Adjust padding for better spacing */
@@ -433,7 +419,7 @@
   cursor: pointer;
   transition: all 0.4s ease;
   position: relative;
-  box-shadow: 0 8px 15px rgba(161, 23, 202, 0.6);
+  box-shadow: 0 8px 15px rgba(255, 0, 90, 0.6);
   border-radius: 50px;
   z-index: 1;
   overflow: hidden;
@@ -456,18 +442,17 @@
 }
 
 .cta-button:hover {
-  color: #0a0a0a;
-  box-shadow: 0 8px 30px rgba(206, 16, 196, 0.8);
+  color: #000;
+  box-shadow: 0 8px 30px rgba(211, 115, 25, 0.8);
   transform: translateY(-5px);
 }
   </style>
 <script>
 export default {
-mounted() {
-    // 在 mounted 钩子中调用 Intersection Observer 的设置函数，确保在每次导航时初始化
-    this.setupIntersectionObserver();
-  },
 methods: {
+    closeSuccessPopup() {
+    this.showSuccessPopup = false; // 关闭成功弹出框
+    },
     setupIntersectionObserver() {
       const items = document.querySelectorAll('.explanation-item');
       const thresholds = [0.25, 0.5, 0.75, 0.95];
