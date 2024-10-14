@@ -24,16 +24,19 @@ contract DeployNoSandwichSwapPair is Script {
         external
         returns (address, MyERC20Mock, MyERC20Mock, NoSandwichSwapPair)
     {
+        helperConfig = new HelperConfig();
         uint256 deployerKey = helperConfig.activeNetworkConfig();
-        address deployer = getDeployerAddress(deployerKey);
+        address deployer = vm.addr(deployerKey);
+
+        console.log("deployer: ", deployer);
 
         vm.startBroadcast(deployerKey);
 
         baseCurrency = new MyERC20Mock("Base", "BASE", deployer);
         quoteCurrency = new MyERC20Mock("Quote", "QUOTE", deployer);
 
-        baseCurrency.mint(deployer, 10000);
-        quoteCurrency.mint(deployer, 10000);
+        baseCurrency.mint(deployer, 10000 ether);
+        quoteCurrency.mint(deployer, 10000 ether);
 
         pair = new NoSandwichSwapPair(
             address(baseCurrency),
@@ -45,20 +48,8 @@ contract DeployNoSandwichSwapPair is Script {
         baseCurrency.transferOwnership(deployer);
         quoteCurrency.transferOwnership(deployer);
 
+        vm.stopBroadcast();
+
         return (deployer, baseCurrency, quoteCurrency, pair);
-    }
-
-    function getDeployerAddress(
-        uint256 privateKey
-    ) public pure returns (address) {
-        // 通过私钥计算公钥
-        // elliptic curve multiplication (ECM) 来生成公钥
-        // ecrecover 不能直接生成公钥，但通过调用预编译合约可以实现。
-
-        // 调用以太坊预编译合约 0x04
-        bytes32 hash = keccak256(abi.encodePacked(privateKey));
-        address deployer = address(uint160(uint256(hash)));
-
-        return deployer;
     }
 }
