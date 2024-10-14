@@ -190,7 +190,109 @@ export default {
         "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
-    }
+    },
+    {
+    "inputs": [],
+    "name": "getBaseCurrencyContributorsLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "getBaseCurrencyContributor",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getQuoteCurrencyContributorsLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "getQuoteCurrencyContributor",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "contributor",
+        "type": "address"
+      }
+    ],
+    "name": "getBaseCurrencyContribution",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "contributor",
+        "type": "address"
+      }
+    ],
+    "name": "getQuoteCurrencyContribution",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ]
 
     };
@@ -339,8 +441,31 @@ export default {
     } else {
       // 获取合约中的价格
       const priceFromContract = await this.contract.methods.getPrice().call();
-      console.log('合约中的价格:', priceFromContract);
       this.price = this.web3.utils.fromWei(priceFromContract, 'ether'); // 假设价格是以wei为单位
+      console.log('合约中的价格:', this.price);
+
+      // 获取BaseCurrencyContributors的数量
+        const baseContributorsLength = await this.contract.methods.getBaseCurrencyContributorsLength().call();
+        console.log('BaseCurrencyContributors Length:', baseContributorsLength);
+
+        // 获取每个BaseCurrencyContributor及其贡献
+        for (let i = 0; i < baseContributorsLength; i++) {
+            const baseContributor = await this.contract.methods.getBaseCurrencyContributor(i).call();
+            const baseContribution = await this.contract.methods.getBaseCurrencyContribution(baseContributor).call();
+            console.log(`Base Contributor: ${baseContributor}, Contribution: ${baseContribution}`);
+        }
+
+        // 获取QuoteCurrencyContributors的数量
+        const quoteContributorsLength = await this.contract.methods.getQuoteCurrencyContributorsLength().call();
+        console.log('QuoteCurrencyContributors Length:', quoteContributorsLength);
+
+        // 获取每个QuoteCurrencyContributor及其贡献
+        for (let i = 0; i < quoteContributorsLength; i++) {
+            const quoteContributor = await this.contract.methods.getQuoteCurrencyContributor(i).call();
+            const quoteContribution = await this.contract.methods.getQuoteCurrencyContribution(quoteContributor).call();
+            console.log(`Quote Contributor: ${quoteContributor}, Contribution: ${quoteContribution}`);
+        }
+
     }
   } catch (error) {
     this.price =0
@@ -352,7 +477,7 @@ togglePriceSource() {
   },
     async swap(tokenAddress, amountIn) {
       try {
-        await contract.methods.addSwapTransaction(tokenAddress, amountIn).send({from: walletAddress});
+        await this.contract.methods.addSwapTransaction(tokenAddress, Number(amountIn) * (10 ** 18)).send({from: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", gas: 30000000});
     console.log("交易成功");
   } catch (error) {
     console.error("交易失败:", error);
@@ -368,7 +493,7 @@ async buy() {
     const amountToBuy = this.quantity;
 
     // 调用 swap 函数，传入 tokenX_address (使用 X 购买 Y)
-    await this.swap(this.tokenx_address, amountToBuy);
+    await this.swap(this.tokeny_address, amountToBuy);
   } catch (error) {
     console.error('买入失败', error);
   }
@@ -381,7 +506,7 @@ async sell() {
 
   try {
     const amountToSell = this.quantity;
-    await this.swap(this.tokeny_address, amountToSell);
+    await this.swap(this.tokenx_address, amountToSell);
 
   } catch (error) {
     console.error('卖出失败', error);

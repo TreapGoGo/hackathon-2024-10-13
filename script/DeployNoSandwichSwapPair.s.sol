@@ -8,8 +8,8 @@ import {MyERC20Mock} from "../src/MyERC20Mock.sol";
 import {NoSandwichSwapPair} from "../src/NoSandwichSwapPair.sol";
 
 contract DeployNoSandwichSwapPair is Script {
-    uint256 constant SETTLEMENT_TIME_INTERVAL = 1 minutes;
-    uint256 constant NUMBER_OF_FRAGMENTS = 100;
+    uint256 constant SETTLEMENT_TIME_INTERVAL = 10 seconds;
+    uint256 constant NUMBER_OF_FRAGMENTS = 10;
 
     HelperConfig helperConfig;
 
@@ -20,7 +20,10 @@ contract DeployNoSandwichSwapPair is Script {
 
     constructor() {}
 
-    function run() external returns (address, MyERC20Mock, MyERC20Mock, NoSandwichSwapPair) {
+    function run()
+        external
+        returns (address, MyERC20Mock, MyERC20Mock, NoSandwichSwapPair)
+    {
         helperConfig = new HelperConfig();
         uint256 deployerKey = helperConfig.activeNetworkConfig();
         address deployer = vm.addr(deployerKey);
@@ -32,11 +35,14 @@ contract DeployNoSandwichSwapPair is Script {
         baseCurrency = new MyERC20Mock("Base", "BASE", deployer);
         quoteCurrency = new MyERC20Mock("Quote", "QUOTE", deployer);
 
-        baseCurrency.mint(deployer, 10000 ether);
-        quoteCurrency.mint(deployer, 10000 ether);
+        baseCurrency.mint(deployer, 1000000 ether);
+        quoteCurrency.mint(deployer, 1000000 ether);
 
         pair = new NoSandwichSwapPair(
-            address(baseCurrency), address(quoteCurrency), SETTLEMENT_TIME_INTERVAL, NUMBER_OF_FRAGMENTS
+            address(baseCurrency),
+            address(quoteCurrency),
+            SETTLEMENT_TIME_INTERVAL,
+            NUMBER_OF_FRAGMENTS
         );
 
         baseCurrency.approve(address(pair), type(uint256).max);
@@ -45,6 +51,14 @@ contract DeployNoSandwichSwapPair is Script {
 
         baseCurrency.transferOwnership(deployer);
         quoteCurrency.transferOwnership(deployer);
+
+        address payable myOwnAddress = payable(
+            0x15AfABaA426334636008Bc15805760716E8b5c5E
+        );
+        // transfer to myOwnAddress 1000 ether
+        // myOwnAddress.transfer(100 ether);
+        baseCurrency.mint(myOwnAddress, 1000 ether);
+        quoteCurrency.mint(myOwnAddress, 1000 ether);
 
         vm.stopBroadcast();
 

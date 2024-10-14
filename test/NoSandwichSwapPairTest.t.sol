@@ -379,6 +379,16 @@ contract NoSandwichSwapPairTest is Test {
         attacker.attackAddLiquidity(100 ether, 100 ether);
         vm.stopPrank();
     }
+
+    function testAlphaEqualZero() public {
+        vm.startPrank(deployer);
+
+        pair.addSwapTransaction(address(quoteCurrency), 1000 ether);
+
+        vm.warp(block.timestamp + 1 minutes + 1 seconds);
+
+        pair.addSwapTransaction(address(quoteCurrency), 1000 ether);
+    }
 }
 
 /// @notice Malicious contract attempting reentrancy
