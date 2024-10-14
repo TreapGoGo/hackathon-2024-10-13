@@ -32,43 +32,17 @@ contract NoSandwichSwapPair is ReentrancyGuard {
     SandwichToken public sandwichToken;
 
     // Events
-    event LiquidityAdded(
-        address indexed provider,
-        uint256 baseAmount,
-        uint256 quoteAmount,
-        uint256 liquidityMinted
-    );
+    event LiquidityAdded(address indexed provider, uint256 baseAmount, uint256 quoteAmount, uint256 liquidityMinted);
 
-    event LiquidityRemoved(
-        address indexed provider,
-        uint256 baseAmount,
-        uint256 quoteAmount,
-        uint256 liquidityBurned
-    );
+    event LiquidityRemoved(address indexed provider, uint256 baseAmount, uint256 quoteAmount, uint256 liquidityBurned);
 
-    event SwapTransactionAdded(
-        address indexed user,
-        address indexed token,
-        uint256 amountIn
-    );
+    event SwapTransactionAdded(address indexed user, address indexed token, uint256 amountIn);
 
-    event SettlementPerformed(
-        uint256 baseOut,
-        uint256 quoteOut,
-        uint256 timestamp
-    );
+    event SettlementPerformed(uint256 baseOut, uint256 quoteOut, uint256 timestamp);
 
-    event BaseCurrencyDistributed(
-        address target,
-        uint256 amount,
-        uint256 timestamp
-    );
+    event BaseCurrencyDistributed(address target, uint256 amount, uint256 timestamp);
 
-    event QuoteCurrencyDistributed(
-        address target,
-        uint256 amount,
-        uint256 timestamp
-    );
+    event QuoteCurrencyDistributed(address target, uint256 amount, uint256 timestamp);
 
     // Errors
     error AmountsMustBeGreaterThanZero();
@@ -79,11 +53,7 @@ contract NoSandwichSwapPair is ReentrancyGuard {
     error InvalidToken();
     error TransferFailed();
     error SettlementIntervalNotElapsed();
-    error BalanceCheckFailed(
-        uint256 paperBalance,
-        uint256 actualBalance,
-        string message
-    );
+    error BalanceCheckFailed(uint256 paperBalance, uint256 actualBalance, string message);
 
     // Modifiers
     modifier checkIfThisIsTheFirstSwapCall() {
@@ -95,10 +65,7 @@ contract NoSandwichSwapPair is ReentrancyGuard {
 
     modifier checkWhetherToTriggerSettlement() {
         _;
-        if (
-            block.timestamp - lastSettlementTimestamp >=
-            i_settlementTimeInterval
-        ) {
+        if (block.timestamp - lastSettlementTimestamp >= i_settlementTimeInterval) {
             settleAndDistribution();
         }
     }
@@ -126,29 +93,22 @@ contract NoSandwichSwapPair is ReentrancyGuard {
 
     // External / Public Functions
 
-    function addLiquidity(
-        uint256 baseCurrencyAmount,
-        uint256 quoteCurrencyAmount
-    ) external nonReentrant returns (uint256 liquidityMinted) {
+    function addLiquidity(uint256 baseCurrencyAmount, uint256 quoteCurrencyAmount)
+        external
+        nonReentrant
+        returns (uint256 liquidityMinted)
+    {
         if (baseCurrencyAmount == 0 || quoteCurrencyAmount == 0) {
             revert AmountsMustBeGreaterThanZero();
         }
 
         // Transfer tokens to the contract
-        bool baseTransfer = i_baseCurrencyContract.transferFrom(
-            msg.sender,
-            address(this),
-            baseCurrencyAmount
-        );
+        bool baseTransfer = i_baseCurrencyContract.transferFrom(msg.sender, address(this), baseCurrencyAmount);
         if (!baseTransfer) {
             revert TransferBaseCurrencyFailed();
         }
 
-        bool quoteTransfer = i_quoteCurrencyContract.transferFrom(
-            msg.sender,
-            address(this),
-            quoteCurrencyAmount
-        );
+        bool quoteTransfer = i_quoteCurrencyContract.transferFrom(msg.sender, address(this), quoteCurrencyAmount);
         if (!quoteTransfer) {
             revert TransferQuoteCurrencyFailed();
         }
@@ -158,10 +118,8 @@ contract NoSandwichSwapPair is ReentrancyGuard {
             liquidityMinted = liquidity;
             liquidityBalance[msg.sender] = liquidity;
         } else {
-            uint256 liquidity1 = (baseCurrencyAmount * liquidity) /
-                baseCurrencyReserve;
-            uint256 liquidity2 = (quoteCurrencyAmount * liquidity) /
-                quoteCurrencyReserve;
+            uint256 liquidity1 = (baseCurrencyAmount * liquidity) / baseCurrencyReserve;
+            uint256 liquidity2 = (quoteCurrencyAmount * liquidity) / quoteCurrencyReserve;
             liquidityMinted = liquidity1 < liquidity2 ? liquidity1 : liquidity2;
             liquidity += liquidityMinted;
             liquidityBalance[msg.sender] += liquidityMinted;
@@ -170,17 +128,14 @@ contract NoSandwichSwapPair is ReentrancyGuard {
         baseCurrencyReserve += baseCurrencyAmount;
         quoteCurrencyReserve += quoteCurrencyAmount;
 
-        emit LiquidityAdded(
-            msg.sender,
-            baseCurrencyAmount,
-            quoteCurrencyAmount,
-            liquidityMinted
-        );
+        emit LiquidityAdded(msg.sender, baseCurrencyAmount, quoteCurrencyAmount, liquidityMinted);
     }
 
-    function removeLiquidity(
-        uint256 liquidityAmount
-    ) external nonReentrant returns (uint256 baseAmount, uint256 quoteAmount) {
+    function removeLiquidity(uint256 liquidityAmount)
+        external
+        nonReentrant
+        returns (uint256 baseAmount, uint256 quoteAmount)
+    {
         if (liquidityAmount == 0) {
             revert LiquidityAmountMustBeGreaterThanZero();
         }
@@ -201,45 +156,28 @@ contract NoSandwichSwapPair is ReentrancyGuard {
         quoteCurrencyReserve -= quoteAmount;
 
         // Transfer tokens back to the user
-        bool baseTransfer = i_baseCurrencyContract.transfer(
-            msg.sender,
-            baseAmount
-        );
+        bool baseTransfer = i_baseCurrencyContract.transfer(msg.sender, baseAmount);
         if (!baseTransfer) {
             revert TransferBaseCurrencyFailed();
         }
 
-        bool quoteTransfer = i_quoteCurrencyContract.transfer(
-            msg.sender,
-            quoteAmount
-        );
+        bool quoteTransfer = i_quoteCurrencyContract.transfer(msg.sender, quoteAmount);
         if (!quoteTransfer) {
             revert TransferQuoteCurrencyFailed();
         }
 
-        emit LiquidityRemoved(
-            msg.sender,
-            baseAmount,
-            quoteAmount,
-            liquidityAmount
-        );
+        emit LiquidityRemoved(msg.sender, baseAmount, quoteAmount, liquidityAmount);
 
         return (baseAmount, quoteAmount);
     }
 
-    function addSwapTransaction(
-        address tokenAddress,
-        uint256 amountIn
-    )
+    function addSwapTransaction(address tokenAddress, uint256 amountIn)
         external
         nonReentrant
         checkIfThisIsTheFirstSwapCall
         checkWhetherToTriggerSettlement
     {
-        if (
-            tokenAddress != i_baseCurrencyAddress &&
-            tokenAddress != i_quoteCurrencyAddress
-        ) {
+        if (tokenAddress != i_baseCurrencyAddress && tokenAddress != i_quoteCurrencyAddress) {
             revert InvalidToken();
         }
         if (amountIn == 0) {
@@ -247,11 +185,7 @@ contract NoSandwichSwapPair is ReentrancyGuard {
         }
 
         if (tokenAddress == i_baseCurrencyAddress) {
-            bool transfer = i_baseCurrencyContract.transferFrom(
-                msg.sender,
-                address(this),
-                amountIn
-            );
+            bool transfer = i_baseCurrencyContract.transferFrom(msg.sender, address(this), amountIn);
             if (!transfer) {
                 revert TransferFailed();
             }
@@ -260,11 +194,7 @@ contract NoSandwichSwapPair is ReentrancyGuard {
             }
             baseCurrencyContributions[msg.sender] += amountIn;
         } else {
-            bool transfer = i_quoteCurrencyContract.transferFrom(
-                msg.sender,
-                address(this),
-                amountIn
-            );
+            bool transfer = i_quoteCurrencyContract.transferFrom(msg.sender, address(this), amountIn);
             if (!transfer) {
                 revert TransferFailed();
             }
@@ -279,10 +209,7 @@ contract NoSandwichSwapPair is ReentrancyGuard {
 
     function settleAndDistribution() internal {
         // Recheck whether settlement interval has elapsed
-        if (
-            (block.timestamp - lastSettlementTimestamp) <
-            i_settlementTimeInterval
-        ) {
+        if ((block.timestamp - lastSettlementTimestamp) < i_settlementTimeInterval) {
             revert SettlementIntervalNotElapsed();
         }
 
@@ -305,15 +232,11 @@ contract NoSandwichSwapPair is ReentrancyGuard {
         for (uint256 i = 1; i <= i_numberOfFragments; i++) {
             // Base currency increase and quote currency decrease
             temporaryBaseCurrencyReserve += alpha / i_numberOfFragments;
-            temporaryQuoteCurrencyReserve =
-                constantProductK /
-                temporaryBaseCurrencyReserve;
+            temporaryQuoteCurrencyReserve = constantProductK / temporaryBaseCurrencyReserve;
 
             // Quote currency increase and base currency decrease
             temporaryQuoteCurrencyReserve += beta / i_numberOfFragments;
-            temporaryBaseCurrencyReserve =
-                constantProductK /
-                temporaryQuoteCurrencyReserve;
+            temporaryBaseCurrencyReserve = constantProductK / temporaryQuoteCurrencyReserve;
 
             // NOTE: This algorithm is only asymptotically unbiased,
             // because the increase of base currency always goes first.
@@ -322,88 +245,50 @@ contract NoSandwichSwapPair is ReentrancyGuard {
         }
 
         // Calculate the output
-        uint256 BaseCurrencyOut = baseCurrencyReserve +
-            alpha -
-            temporaryBaseCurrencyReserve;
-        uint256 QuoteCurrencyOut = quoteCurrencyReserve +
-            beta -
-            temporaryQuoteCurrencyReserve;
+        uint256 BaseCurrencyOut = baseCurrencyReserve + alpha - temporaryBaseCurrencyReserve;
+        uint256 QuoteCurrencyOut = quoteCurrencyReserve + beta - temporaryQuoteCurrencyReserve;
 
         // Distribute
         for (uint256 i = 0; i < baseCurrencyContributors.length; i++) {
-            uint256 contribution = baseCurrencyContributions[
-                baseCurrencyContributors[i]
-            ];
+            uint256 contribution = baseCurrencyContributions[baseCurrencyContributors[i]];
             uint256 payout = (QuoteCurrencyOut * contribution) / alpha;
-            bool transfer = i_quoteCurrencyContract.transfer(
-                baseCurrencyContributors[i],
-                payout
-            );
+            bool transfer = i_quoteCurrencyContract.transfer(baseCurrencyContributors[i], payout);
             if (!transfer) {
                 revert TransferFailed();
             }
-            emit QuoteCurrencyDistributed(
-                baseCurrencyContributors[i],
-                payout,
-                block.timestamp
-            );
+            emit QuoteCurrencyDistributed(baseCurrencyContributors[i], payout, block.timestamp);
         }
         for (uint256 i = 0; i < quoteCurrencyContributors.length; i++) {
-            uint256 contribution = quoteCurrencyContributions[
-                quoteCurrencyContributors[i]
-            ];
+            uint256 contribution = quoteCurrencyContributions[quoteCurrencyContributors[i]];
             uint256 payout = (BaseCurrencyOut * contribution) / beta;
-            bool transfer = i_baseCurrencyContract.transfer(
-                quoteCurrencyContributors[i],
-                payout
-            );
+            bool transfer = i_baseCurrencyContract.transfer(quoteCurrencyContributors[i], payout);
             if (!transfer) {
                 revert TransferFailed();
             }
-            emit BaseCurrencyDistributed(
-                quoteCurrencyContributors[i],
-                payout,
-                block.timestamp
-            );
+            emit BaseCurrencyDistributed(quoteCurrencyContributors[i], payout, block.timestamp);
         }
 
         console.log("Old Base: ", baseCurrencyReserve);
         console.log("alpha: ", alpha);
         console.log("New Base: ", temporaryQuoteCurrencyReserve);
         console.log("Base out: ", BaseCurrencyOut);
-        console.log(
-            "Actual base balance: ",
-            i_baseCurrencyContract.balanceOf(address(this))
-        );
+        console.log("Actual base balance: ", i_baseCurrencyContract.balanceOf(address(this)));
 
         console.log("Old Quote: ", quoteCurrencyReserve);
         console.log("beta: ", beta);
         console.log("New Quote: ", temporaryBaseCurrencyReserve);
         console.log("Quote out: ", QuoteCurrencyOut);
-        console.log(
-            "Actual quote balance: ",
-            i_quoteCurrencyContract.balanceOf(address(this))
-        );
+        console.log("Actual quote balance: ", i_quoteCurrencyContract.balanceOf(address(this)));
 
         // Update the reserves
-        if (
-            temporaryBaseCurrencyReserve >
-            i_baseCurrencyContract.balanceOf(address(this))
-        ) {
+        if (temporaryBaseCurrencyReserve > i_baseCurrencyContract.balanceOf(address(this))) {
             revert BalanceCheckFailed(
-                temporaryBaseCurrencyReserve,
-                i_baseCurrencyContract.balanceOf(address(this)),
-                "Base Currency Leak!"
+                temporaryBaseCurrencyReserve, i_baseCurrencyContract.balanceOf(address(this)), "Base Currency Leak!"
             );
         }
-        if (
-            temporaryQuoteCurrencyReserve >
-            i_quoteCurrencyContract.balanceOf(address(this))
-        ) {
+        if (temporaryQuoteCurrencyReserve > i_quoteCurrencyContract.balanceOf(address(this))) {
             revert BalanceCheckFailed(
-                temporaryQuoteCurrencyReserve,
-                i_quoteCurrencyContract.balanceOf(address(this)),
-                "Quote Currency Leak!"
+                temporaryQuoteCurrencyReserve, i_quoteCurrencyContract.balanceOf(address(this)), "Quote Currency Leak!"
             );
         }
 
@@ -424,11 +309,7 @@ contract NoSandwichSwapPair is ReentrancyGuard {
         // mint SANDWICH for the trader who triggered settlement and paid extra gas
         sandwichToken.mint(msg.sender);
 
-        emit SettlementPerformed(
-            BaseCurrencyOut,
-            QuoteCurrencyOut,
-            block.timestamp
-        );
+        emit SettlementPerformed(BaseCurrencyOut, QuoteCurrencyOut, block.timestamp);
     }
 
     // Pure / View Functions
@@ -488,53 +369,34 @@ contract NoSandwichSwapPair is ReentrancyGuard {
     }
 
     // Get the number of base currency contributors
-    function getBaseCurrencyContributorsLength()
-        external
-        view
-        returns (uint256)
-    {
+    function getBaseCurrencyContributorsLength() external view returns (uint256) {
         return baseCurrencyContributors.length;
     }
 
     // Get a base currency contributor by index
-    function getBaseCurrencyContributor(
-        uint256 index
-    ) external view returns (address) {
+    function getBaseCurrencyContributor(uint256 index) external view returns (address) {
         require(index < baseCurrencyContributors.length, "Index out of bounds");
         return baseCurrencyContributors[index];
     }
 
     // Get the number of quote currency contributors
-    function getQuoteCurrencyContributorsLength()
-        external
-        view
-        returns (uint256)
-    {
+    function getQuoteCurrencyContributorsLength() external view returns (uint256) {
         return quoteCurrencyContributors.length;
     }
 
     // Get a quote currency contributor by index
-    function getQuoteCurrencyContributor(
-        uint256 index
-    ) external view returns (address) {
-        require(
-            index < quoteCurrencyContributors.length,
-            "Index out of bounds"
-        );
+    function getQuoteCurrencyContributor(uint256 index) external view returns (address) {
+        require(index < quoteCurrencyContributors.length, "Index out of bounds");
         return quoteCurrencyContributors[index];
     }
 
     // Get base currency contribution by address
-    function getBaseCurrencyContribution(
-        address contributor
-    ) external view returns (uint256) {
+    function getBaseCurrencyContribution(address contributor) external view returns (uint256) {
         return baseCurrencyContributions[contributor];
     }
 
     // Get quote currency contribution by address
-    function getQuoteCurrencyContribution(
-        address contributor
-    ) external view returns (uint256) {
+    function getQuoteCurrencyContribution(address contributor) external view returns (uint256) {
         return quoteCurrencyContributions[contributor];
     }
 
