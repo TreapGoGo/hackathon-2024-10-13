@@ -1,6 +1,6 @@
 <center><H1>No Sandwich Swap</H1></center>
 
-<center>by WHU Web3 Club</center>
+<center>by WHU Web3 Club & ZJUBCA</center>
 
 ## 概述
 
