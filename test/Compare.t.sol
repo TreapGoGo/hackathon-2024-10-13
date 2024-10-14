@@ -161,7 +161,7 @@ contract Compare is Test {
             "DEX1 MEV Profit = ",
             calculatePercentage(attackNewQuoteBalance - attackOldQuoteBalance, OPERATION_AMOUNT, 3)
         );
-        console.log("DEX1 Price Impact = ", calculatePercentage(abs(beginPrice, endPrice), beginPrice, 3));
+        // console.log("DEX1 Price Impact = ", calculatePercentage(abs(beginPrice, endPrice), beginPrice, 3));
         // console.log(
         //     "attackOldQuoteBalance = ",
         //     attackOldQuoteBalance / 1 ether,
@@ -220,7 +220,7 @@ contract Compare is Test {
             "DEX2 MEV Profit = ",
             calculatePercentage(attackNewQuoteBalance - attackOldQuoteBalance, OPERATION_AMOUNT, 3)
         );
-        console.log("DEX2 Price Impact = ", calculatePercentage(abs(beginPrice, endPrice), beginPrice, 3));
+        // console.log("DEX2 Price Impact = ", calculatePercentage(abs(beginPrice, endPrice), beginPrice, 3));
         // console.log(
         //     "attackOldQuoteBalance = ",
         //     attackOldQuoteBalance / 1 ether,

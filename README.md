@@ -90,3 +90,22 @@ $$
 
 一个可能的问题是， MEV 攻击者依然可以通过交易排序来让自己成为结算触发者从而获得治理代币。然而，这种 MEV 攻击并没有像以前的那种攻击一样，直接损害到普通交易者的权益。另一方面，随着 MEV 攻击者持有的 SANDWICH 代币越来越多，他们的利益也与 NoSandwichSwap 建立绑定，从而倒逼他们成为协议生态的维护者。
 
+## Quick Start
+
+```bash
+anvil --block-time 5
+```
+
+```
+source .env
+forge script script/DeployNoSandwichSwapPair.s.sol:DeployNoSandwichSwapPair --rpc-url http://127.0.0.1:8545 --private-key $ANVIL_PRIVATE_KEY --broadcast
+```
+
+```bash
+cd Web/NoSandwichSwapPair_Web
+npm run dev
+```
+
+```bash
+forge test --match-test "testTradeDex1|testTradeDex2" -vv
+```
