@@ -151,9 +151,9 @@ export default {
       price: null, // 当前价格，从合约获取
       contract: null, // 智能合约对象
       web3: null, // Web3对象
-      contractAddress: '0xYourContractAddressHere', // 你的智能合约地址
-      tokenx_address: '0xYourContractAddress2945', // x的地址
-      tokeny_address: '0xYourContractAddress1354', // y的地址
+      contractAddress: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9', // 你的智能合约地址
+      tokenx_address: '0x5FbDB2315678afecb367f032d93F642f64180aa3', // x的地址
+      tokeny_address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512', // y的地址
       useRandomPrice: false, // 控制是否使用随机价格
       contractABI: [
     {
@@ -339,6 +339,7 @@ export default {
     } else {
       // 获取合约中的价格
       const priceFromContract = await this.contract.methods.getPrice().call();
+      console.log('合约中的价格:', priceFromContract);
       this.price = this.web3.utils.fromWei(priceFromContract, 'ether'); // 假设价格是以wei为单位
     }
   } catch (error) {

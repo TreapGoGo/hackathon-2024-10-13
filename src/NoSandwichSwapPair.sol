@@ -402,6 +402,6 @@ contract NoSandwichSwapPair is ReentrancyGuard {
 
     // Get the price
     function getPrice() external view returns (uint256) {
-        return quoteCurrencyReserve / baseCurrencyReserve;
+        return (quoteCurrencyReserve * 1 ether) / baseCurrencyReserve;
     }
 }
