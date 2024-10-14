@@ -1,13 +1,12 @@
 <template>
     <header class="header">
       <div class="logo">
-        <img src="../assets/uniswap-logo.png" alt="Uniswap Logo" />
-        <span>Uniswap</span>
+        <img src="../assets/logo.png" alt="Logo" />
+        <span>No Sandwich</span>
       </div>
       <nav class="nav">
         <router-link v-bind:to="{name:'home'}">Home</router-link>
         <router-link v-bind:to="{name: 'trade' }">Trade</router-link>
-        <router-link v-bind:to="{name:'explore'}">Explore</router-link>
       </nav>
       <div class="actions">
         <button class="connect-btn" @click="handleWalletConnection">
@@ -84,7 +83,7 @@ export default {
   }
   
   .logo img {
-    height: 5vh;
+    height: 8vh;
     margin-left: 2vw;
     margin-right: 2vw;
   }
@@ -92,7 +91,7 @@ export default {
   .logo span {
     font-weight: bold;
     font-size: 1.5vw;
-    color: #a24dff; 
+    color: #168ddb; 
   }
   
   .nav {
@@ -110,7 +109,7 @@ export default {
   }
 
   .nav a:hover {
-    color: #a24dff;
+    color: #168ddb;
     left:5vw;
   }
   
@@ -123,7 +122,7 @@ export default {
 
 .connect-btn {
   font-size: 1vw;
-  background-color: #a24dff;
+  background-color: #168ddb;
   border: none;
   padding: 8px 16px;
   border-radius: 20px;
@@ -134,7 +133,7 @@ export default {
 }
 
 .connect-btn:hover {
-  background-color: #8a39db;
+  background-color: #6a39db;
 }
 
 .connect-btn:active {
