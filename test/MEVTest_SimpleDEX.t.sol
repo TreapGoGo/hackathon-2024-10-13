@@ -68,9 +68,7 @@ contract MEVAttackTest is Test {
         uint256 mevProfit = mevFinalBalanceToken1 - mevInitialBalanceToken1;
 
         // 计算 Trader 承受的价格滑点
-        uint256 priceSlippage = (mevBoughtAmount * 1 ether) /
-            traderBoughtAmount -
-            1 ether;
+        uint256 priceSlippage = (mevBoughtAmount * 1 ether) / traderBoughtAmount - 1 ether;
 
         // 验证 MEV 利润和价格滑点
         emit log_named_uint("MEV Attack Profit in token1", mevProfit);
@@ -84,11 +82,7 @@ contract MEVAttackTest is Test {
 
 // Mock ERC20 token for testing
 contract MockERC20 is ERC20 {
-    constructor(
-        string memory name,
-        string memory symbol,
-        uint256 initialSupply
-    ) ERC20(name, symbol) {
+    constructor(string memory name, string memory symbol, uint256 initialSupply) ERC20(name, symbol) {
         _mint(msg.sender, initialSupply);
     }
 
