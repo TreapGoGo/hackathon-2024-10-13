@@ -219,7 +219,7 @@ export default {
     },
     async initWeb3() {
       if (window.ethereum) {
-        this.web3 = new Web3(window.ethereum);
+        this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
         try {
           await window.ethereum.request({ method: 'eth_requestAccounts' });

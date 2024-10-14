@@ -39,6 +39,10 @@ contract DeployNoSandwichSwapPair is Script {
             address(baseCurrency), address(quoteCurrency), SETTLEMENT_TIME_INTERVAL, NUMBER_OF_FRAGMENTS
         );
 
+        baseCurrency.approve(address(pair), type(uint256).max);
+        quoteCurrency.approve(address(pair), type(uint256).max);
+        pair.addLiquidity(1000 ether, 1000 ether);
+
         baseCurrency.transferOwnership(deployer);
         quoteCurrency.transferOwnership(deployer);
 
