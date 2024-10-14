@@ -101,17 +101,12 @@ contract NoSandwichSwapPairTest is Test {
         uint256 balanceBefore = pair.liquidityBalance(deployer);
 
         vm.startPrank(deployer);
-        (uint256 baseOut, uint256 quoteOut) = pair.removeLiquidity(
-            liquidityToRemove
-        );
+        (uint256 baseOut, uint256 quoteOut) = pair.removeLiquidity(liquidityToRemove);
         vm.stopPrank();
 
         // Verify liquidity is removed correctly
         assertEq(pair.liquidity(), liquidityBefore - liquidityToRemove);
-        assertEq(
-            pair.liquidityBalance(deployer),
-            balanceBefore - liquidityToRemove
-        );
+        assertEq(pair.liquidityBalance(deployer), balanceBefore - liquidityToRemove);
 
         // Verify reserves are updated
         assertEq(pair.baseCurrencyReserve(), baseAmount - baseOut);
@@ -337,8 +332,7 @@ contract NoSandwichSwapPairTest is Test {
 
         // Check constant product
         uint256 k = pair.getConstantProduct();
-        uint256 expectedK = pair.baseCurrencyReserve() *
-            pair.quoteCurrencyReserve();
+        uint256 expectedK = pair.baseCurrencyReserve() * pair.quoteCurrencyReserve();
         assertEq(k, expectedK);
     }
 
@@ -446,10 +440,7 @@ contract MaliciousReentrant {
         pair = NoSandwichSwapPair(_pair);
     }
 
-    function attackAddLiquidity(
-        uint256 baseAmount,
-        uint256 quoteAmount
-    ) external {
+    function attackAddLiquidity(uint256 baseAmount, uint256 quoteAmount) external {
         pair.addLiquidity(baseAmount, quoteAmount);
     }
 
