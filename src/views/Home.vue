@@ -7,21 +7,19 @@
         <div class="swap-input">
           <label for="sell" class="input-label">Sell</label>
           <select id="sell" class="custom-select">
-            <option value="ETH">ETH</option>
-            <option value="BTC">BTC</option>
-            <option value="USDT">USDT</option>
+            <option value="Token X">Token X</option>
+            <option value="Token Y">Token Y</option>
           </select>
         </div>
         <div class="swap-input">
           <label for="buy" class="input-label">Buy</label>
           <select id="buy" class="custom-select">
-            <option value="ETH">ETH</option>
-            <option value="BTC">BTC</option>
-            <option value="USDT">USDT</option>
+            <option value="Token Y">Token Y</option>
+            <option value="Token X">Token X</option>
           </select>
         </div>
   
-        <button class="get-started-btn">Get started</button>
+        <router-link v-bind:to="{name: 'trade' }"><button class="get-started-btn">Get started</button></router-link>
       </div>
   
       <div class="description">
@@ -52,6 +50,20 @@
         <img src="../assets/figure2.png" alt="Informative Image">
       </div>
       <div class="text-box">
+        <h2>What is the harms of MEV ?</h2>
+        <p>
+          MEV allows front-running or sandwich attacks, where users may end up with worse trading prices, reducing profits or causing direct financial losses.
+        </p>
+        <button class="learn-more-btn">Learn More</button>
+      </div>
+    </div>
+  </div>
+  <div class="second-section">
+    <div class="content-container">
+      <div class="image-box section_three" >
+        <img src="../assets/figure3.png" alt="Informative Image">
+      </div>
+      <div class="text-box">
         <h2>What we do ?</h2>
         <p>
           We split the trades within the trading cycle into n equal parts for buy and sell operations to avoid MEV attacks.
@@ -65,7 +77,7 @@
       <h2>What is a Miner ?</h2>
       <p>A miner is a participant in blockchain networks who validates transactions and adds them to the blockchain by solving complex cryptographic puzzles. In return, miners are rewarded with cryptocurrency and transaction fees.
       </p>
-      <a href="https://zh.wikipedia.org/wiki/%E4%BA%94%E8%A1%8C" target="_blank">
+      <a href="https://www.coinbase.com/zh-cn/learn/crypto-basics/what-is-mining" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
@@ -73,7 +85,7 @@
       <h2>What is a Transaction ?</h2>
       <p>A transaction in blockchain is a transfer of data or value, like sending cryptocurrency between users. It is processed by miners and added to the blockchain, ensuring its security and immutability.
       </p>
-      <a href="https://zh.wikipedia.org/zh-cn/%E9%98%B4%E9%98%B3" target="_blank">
+      <a href="https://www.bitcoin.com/zh/get-started/what-is-a-token/" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
@@ -81,7 +93,7 @@
       <h2>What is MEV ?</h2>
       <p>MEV (Miner Extractable Value) refers to the profit miners can make by manipulating the order of transactions in a block, such as by front-running, reordering, or including specific transactions to maximize their earnings.
       </p>
-      <a href="https://zh.wikipedia.org/wiki/%E5%85%AB%E5%8D%A6" target="_blank">
+      <a href="https://academy.binance.com/zh/articles/what-is-maximal-extractable-value-mev" target="_blank">
         <button class="cta-button learn-more">Learn More</button>
       </a>
     </div>
@@ -196,7 +208,6 @@
     border-top-color: #168ddb;
   }
 
-  
   .get-started-btn {
     background-color: #168ddb;
     color: white;
@@ -288,6 +299,10 @@
 .image-box {
   flex: 1;
   padding-right: 2rem;
+}
+
+.section_three{
+  width:1vw;
 }
 
 .image-box img {
@@ -428,7 +443,6 @@
   color: #fff;
   padding: 1.5vh 4vw; /* Adjust padding for better spacing */
   font-size: 1.2vw; /* Responsive font size */
-  font-family: 'ProtestGuerrilla-Regular', "SimSun";
   letter-spacing: 1.5px;
   text-transform: uppercase;
   cursor: pointer;
@@ -461,7 +475,8 @@
   box-shadow: 0 8px 30px rgba(206, 16, 196, 0.8);
   transform: translateY(-5px);
 }
-  </style>
+
+</style>
 <script>
 export default {
 mounted() {

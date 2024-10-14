@@ -8,8 +8,12 @@
       <div class="trade-operations">
         <label for="quantity">Amount:</label>
         <input v-model="quantity" type="number" id="quantity" min="1" />
-        <button @click="buy" class="buy-button">buy</button>
-        <button @click="sell" class="sell-button">Sell</button>
+        <button @click="buy" class="buy-button">buy Token X</button>
+        <button @click="sell" class="sell-button">Sell Token X</button>
+        <button @click="togglePriceSource" class="test-button">
+          {{ useRandomPrice ? 'Switch to Contract Price' : 'Switch to Random Price' }}
+</button>
+
       </div>
     </div>
   </div>
@@ -114,6 +118,10 @@
     box-shadow: 0 0 10px rgba(255, 118, 117, 0.7);
   }
 
+  .test-button{
+    background-color: #20d891;
+    box-shadow: 0 0 10px rgba(38, 156, 58, 0.7);
+  }
   button:hover {
     transform: scale(1.05);
     box-shadow: 0 0 15px rgba(111, 66, 193, 0.9);
@@ -146,6 +154,7 @@ export default {
       contractAddress: '0xYourContractAddressHere', // 你的智能合约地址
       tokenx_address: '0xYourContractAddress2945', // x的地址
       tokeny_address: '0xYourContractAddress1354', // y的地址
+      useRandomPrice: false, // 控制是否使用随机价格
       contractABI: [
     {
         "constant": true,
@@ -213,10 +222,8 @@ export default {
         this.web3 = new Web3(window.ethereum);
 
         try {
-          // 请求用户授权
           await window.ethereum.request({ method: 'eth_requestAccounts' });
-          
-          // 初始化合约对象
+
           this.contract = new this.web3.eth.Contract(this.contractABI, this.contractAddress);
 
           console.log('合约已成功初始化');
@@ -323,13 +330,25 @@ export default {
 
     // 获取合约的当前价格
     async fetchPriceFromContract() {
-      try {
-        const priceFromContract = await this.contract.methods.getPrice().call();
-        this.price = this.web3.utils.fromWei(priceFromContract, 'ether'); // 假设价格是以wei为单位
-      } catch (error) {
-        console.error('获取价格失败', error);
-      }
-    },
+  try {
+    if (this.useRandomPrice) {
+      // 使用随机价格
+      const randomPrice = (Math.random() * (200 - 100) + 100).toFixed(2);
+      this.price = randomPrice;
+      console.log('随机生成的价格:', this.price);
+    } else {
+      // 获取合约中的价格
+      const priceFromContract = await this.contract.methods.getPrice().call();
+      this.price = this.web3.utils.fromWei(priceFromContract, 'ether'); // 假设价格是以wei为单位
+    }
+  } catch (error) {
+    this.price =0
+    console.error('获取价格失败', error);
+  }
+},
+togglePriceSource() {
+    this.useRandomPrice = !this.useRandomPrice;
+  },
     async swap(tokenAddress, amountIn) {
       try {
         await contract.methods.addSwapTransaction(tokenAddress, amountIn).send({from: walletAddress});
@@ -369,11 +388,9 @@ async sell() {
 },
     updateChart() {
       this.fetchPriceFromContract().then(() => {
-        this.data.shift(); // 移除最早的一个数据
         this.data.push(parseFloat(this.price)); // 将新的价格加入数据数组
-        
+        this.data.shift(); // 移除最早的一个数据
         const newTimeLabels = this.generateTimeLabels();
-
         this.chart.setOption({
           xAxis: {
             data: newTimeLabels, // 更新时间轴
