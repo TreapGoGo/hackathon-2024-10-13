@@ -47,6 +47,30 @@
 3. 投入流动性池的资金数量是有限的， $x_i$ 显然不可能无限增大，而是一个有界数列
 4. 根据单调有界原理，  $\displaystyle\lim_{N\to\infty} x_{2N}$ 必然存在
 
+$$
+x_{n+2} = 
+\begin{cases}
+    x_n + \frac{k\alpha - \beta x_n^2}{kn + \beta x_n}, n = 2m, \\
+    x_{n+1} + \frac{\alpha}{N}, n = 2m+1
+\end{cases}
+$$
+
+$$
+\begin{align*}
+    x_{n+2}^2 - x_n^2 &= (x_{n+2}+x_n)(x_{n+2}-x_n) \\
+    &\sim 2x_n \cdot \frac{k\alpha-\beta x_n^2}{kN} \\
+    &\sim 2\sqrt{k} \cdot \frac{k\alpha-\beta k}{kN} \\
+    &= 2\sqrt{k}(\alpha-\beta)\frac{1}{N}
+\end{align*}
+$$
+
+$$
+\begin{align*}
+    \sum_{i=0}^{m-1} (x_{2i+2}^2 - 2x_i^2) = 2\sqrt{k}(\alpha-\beta) \\
+    \implies x_{2m} = \sqrt{k+2\sqrt{k}(\alpha-\beta)}
+\end{align*}
+$$
+
 因此，随着交易的无限均分，流动性池最终将趋于一个固定值。在数值模拟中， $N\ge100$ 时基本可以认为数值不再变化。定义 $\displaystyle x'=\lim_{N\to\infty} x_{2N}, y'=\lim_{N\to\infty} y_{2N}$ 。
 
 每个结算周期中，交易者可能发送多笔实际交易。对于前若干笔交易，只做数据记录而不结算；对于周期的最后一笔交易，触发结算流程，将收集的代币按贡献分配给交易者。
