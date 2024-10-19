@@ -195,9 +195,9 @@ export default {
       price: null, // 当前价格，从合约获取
       contract: null, // 智能合约对象
       web3: null, // Web3对象
-      contractAddress: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9', // 你的智能合约地址
-      tokenx_address: '0x5FbDB2315678afecb367f032d93F642f64180aa3', // x的地址
-      tokeny_address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512', // y的地址
+      contractAddress: '0xC32609C91d6B6b51D48f2611308FEf121B02041f', // 你的智能合约地址
+      tokenx_address: '0x627b9A657eac8c3463AD17009a424dFE3FDbd0b1', // x的地址
+      tokeny_address: '0xa62835D1A6bf5f521C4e2746E1F51c923b8f3483', // y的地址
       useRandomPrice: false, // 控制是否使用随机价格
       redHeight: 50,
       contractABI: [
