@@ -1,0 +1,14 @@
+<!-- Subsection2_1.vue -->
+<template>
+    <div>
+      <h2>Subsection 2.1</h2>
+      <p>This is the content of Subsection 2.1.</p>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    name: 'Subsection2_1',
+  };
+  </script>
+  
