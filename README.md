@@ -91,7 +91,7 @@ This method of trading is similar to the call auction process on the A-share mar
 ### Description of Components:
 
 ![](Web/NoSandwichSwapPair_Web/src/assets/figure.png)
-### Tokenomics
+### Tokenomics:
 
 Since the trader who triggers settlement will have to pay more gas to complete the settlement and distribution, it is necessary to provide compensation. We stipulate that the initiator of the last transaction in each settlement cycle (i.e., the settlement trigger) will receive a reward in governance tokens. Here, we assume the governance token is \$SANDWICH.
 
