@@ -20,10 +20,7 @@ contract DeployNoSandwichSwapPair is Script {
 
     constructor() {}
 
-    function run()
-        external
-        returns (address, MyERC20Mock, MyERC20Mock, NoSandwichSwapPair)
-    {
+    function run() external returns (address, MyERC20Mock, MyERC20Mock, NoSandwichSwapPair) {
         helperConfig = new HelperConfig();
         uint256 deployerKey = helperConfig.activeNetworkConfig();
         address deployer = vm.addr(deployerKey);
@@ -39,10 +36,7 @@ contract DeployNoSandwichSwapPair is Script {
         quoteCurrency.mint(deployer, 1000000 ether);
 
         pair = new NoSandwichSwapPair(
-            address(baseCurrency),
-            address(quoteCurrency),
-            SETTLEMENT_TIME_INTERVAL,
-            NUMBER_OF_FRAGMENTS
+            address(baseCurrency), address(quoteCurrency), SETTLEMENT_TIME_INTERVAL, NUMBER_OF_FRAGMENTS
         );
 
         baseCurrency.approve(address(pair), type(uint256).max);
@@ -52,9 +46,7 @@ contract DeployNoSandwichSwapPair is Script {
         baseCurrency.transferOwnership(deployer);
         quoteCurrency.transferOwnership(deployer);
 
-        address payable myOwnAddress = payable(
-            0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-        );
+        address payable myOwnAddress = payable(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266);
         // transfer to myOwnAddress 1000 ether
         // myOwnAddress.transfer(10 ether);
         baseCurrency.mint(myOwnAddress, 1000 ether);
