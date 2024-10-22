@@ -13,7 +13,7 @@ Category 2: (Hot) Smart Contract, DeFi, AI, Layer2, DePIN, etc.
 ## Mandatory Before Offline Demo
 
 1. **Demo Video**: [NoSandwichSwap Demo Video](https://youtu.be/C17XacIXz3g)
-2. **PPT**: See README.md
+2. **PPT**: [NoSandwichSwap Demo](https://docs.google.com/presentation/d/18tYBaf0ovJM_Z3Yu_xxggGoln9vmmSii/edit?usp=sharing&ouid=118167211328459738785&rtpof=true&sd=true)
 
 ## Introduction
 
