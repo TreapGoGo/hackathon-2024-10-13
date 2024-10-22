@@ -52,7 +52,7 @@ export default {
             { name: 'Fox(Qian Zhang)', subSectionId: 3},
             {name: 'SegmentOverflow', subSectionId: 4},
             { name: 'Treap(Leader)', subSectionId: 5},
-            { name: 'OwesTre', subSectionId: 6},
+            { name: 'Xi77jWhy', subSectionId: 6},
           ],
         },
         // 更多 section 可按需添加
