@@ -30,29 +30,10 @@ Category 2: (Hot) Smart Contract, DeFi, AI, Layer2, DePIN, etc.
 5. **For the Ecosystem**: Encourages more trades and increases market liquidity through governance token incentives.
 
 ---
-## Quick Start
 
-```bash
-anvil --fork-url https://rpc.api.moonbase.moonbeam.network 
-```
+## Functionalities and Schedule
 
-PS: Remember to create a `.env` file with `ANVIL_PRIVATE_KEY` inside.
-
-```
-source .env
-forge script script/DeployNoSandwichSwapPair.s.sol:DeployNoSandwichSwapPair --rpc-url http://127.0.0.1:8545 --private-key $ANVIL_PRIVATE_KEY --broadcast
-```
-
-```bash
-cd Web/NoSandwichSwapPair_Web
-npm run dev
-```
-
-```bash
-forge test --match-test "testTradeDex1|testTradeDex2" -vv
-```
-
-## Features Planned for the Hackathon
+This project was created on 2024/10/13, adjusted to the demand of Polkadot Hackathon on 2024/10/23.
 
 ### Current Status Before Hackathon
 
@@ -192,3 +173,24 @@ One potential issue is that MEV attackers can still manipulate transaction order
 - Treap(leader): 1981315951@qq.com
 - OwesTre: JiayingChen_df016@outlook.com
 
+## Quick Start
+
+```bash
+anvil --fork-url https://rpc.api.moonbase.moonbeam.network 
+```
+
+PS: Remember to create a `.env` file with `ANVIL_PRIVATE_KEY` inside.
+
+```
+source .env
+forge script script/DeployNoSandwichSwapPair.s.sol:DeployNoSandwichSwapPair --rpc-url http://127.0.0.1:8545 --private-key $ANVIL_PRIVATE_KEY --broadcast
+```
+
+```bash
+cd Web/NoSandwichSwapPair_Web
+npm run dev
+```
+
+```bash
+forge test --match-test "testTradeDex1|testTradeDex2" -vv
+```
