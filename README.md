@@ -1,10 +1,25 @@
 # No Sandwich Swap
 
+## Track and Bounty
+
+### Chosen Track
+Category 2: (Hot) Smart Contract, DeFi, AI, Layer2, DePIN, etc.
+
+### Bounty Application
+- Bifrost
+- Moonbeam
+- Blockchain for good
+
+## Mandatory Before Offline Demo
+
+1. **Demo Video**: [NoSandwichSwap Demo Video](https://youtu.be/C17XacIXz3g)
+2. **PPT**: See README.md
+
 ## Introduction
 
 **No Sandwich Swap** is an anti-MEV DEX that utilizes **Hyperbolic Call Auction (HCA)** to aggregate multiple trades over a period of time. By subdividing them infinitely and staggering them evenly, it helps to amortize the price shock effect of a single trade, while spreading out the trades of MEV attackers over the entire cycle. This effectively reduces arbitrage gains for MEV attackers.
 
-### Key Benefits:
+### Key Benefits
 
 1. **For the Market**: Reduces price shocks, allowing the actual transaction price to be closer to the fair price.
 2. **For Attackers**: Effectively protects against MEV attacks, making sandwich attacks unprofitable.
@@ -12,19 +27,46 @@
 4. **For Liquidity Providers (LPs)**: Reduces price volatility and minimizes LPs' exposure to impermanent losses.
 5. **For the Ecosystem**: Encourages more trades and increases market liquidity through governance token incentives.
 
+---
+## Quick Start
+
+```bash
+anvil --fork-url https://rpc.api.moonbase.moonbeam.network 
+```
+
+PS: Remember to create a `.env` file with `ANVIL_PRIVATE_KEY` inside.
+
+```
+source .env
+forge script script/DeployNoSandwichSwapPair.s.sol:DeployNoSandwichSwapPair --rpc-url http://127.0.0.1:8545 --private-key $ANVIL_PRIVATE_KEY --broadcast
+```
+
+```bash
+cd Web/NoSandwichSwapPair_Web
+npm run dev
+```
+
+```bash
+forge test --match-test "testTradeDex1|testTradeDex2" -vv
+```
+
 ## Features Planned for the Hackathon
 
-### Current Status Before Hackathon:
+### Current Status Before Hackathon
 - Derived a brand-new Anti-MEV AMM theory through mathematical proof.
 
-### Features Planned for Hackathon:
-- Implemented the mathematical theory and designed tokenomics based on this theory.
+### Features Planned for Hackathon
+- Implement the refined mathematical theory with a closed form of parity price and design tokenomics based on this theory.
 
 ## Architecture
 
-### System Architecture Diagram:
-We have developed No Sandwich Swap, an MEV-resistant DEX that uses a Hyperbolic Call Auction (HCA) mechanism. This mechanism aggregates multiple transactions over a certain period and then infinitely subdivides and uniformly interleaves them, thereby smoothing out the price impact of individual transactions and dispersing the trades of MEV attackers throughout the entire cycle, significantly reducing their arbitrage profits. Based on this approach, we have proven that the upper bound of asset price volatility within each phase is O(n^1/2), where n is the absolute value of the difference between the amounts of funds sold and bought over a certain period. Our protocol operates on an order placement and settlement model, collecting orders over a certain period before entering the settlement phase, which repeats cyclically.
-### Mathematically proven:
+### System Architecture Diagram
+
+We have developed No Sandwich Swap, an MEV-resistant DEX that uses a **Hyperbolic Call Auction** (HCA) mechanism. This mechanism aggregates multiple transactions over a certain period and then infinitely subdivides and uniformly interleaves them, thereby smoothing out the price impact of individual transactions and dispersing the trades of MEV attackers throughout the entire cycle, significantly reducing their arbitrage profits. Based on this approach, we have proven that the upper bound of asset price volatility within each phase is  $O(\sqrt{n})$ , where n is the absolute value of the difference between the amounts of funds sold and bought over a certain period. Our protocol operates on an order placement and settlement model, collecting orders over a certain period before entering the settlement phase, which repeats cyclically.
+
+![](Web/NoSandwichSwapPair_Web/src/assets/figure.png)
+
+### Mathematical Proof
 
 Assume the initial liquidity pool satisfies $x_0 \times y_0 = k$. For each settlement period, the amount of base currency and quote currency received by the liquidity pool are denoted as $\{a_1, a_2, ..., a_A\}, \{b_1, b_2, ..., b_B\}$ respectively. Let $\displaystyle\alpha = \sum_{i=1}^A a_i, \beta = \sum_{i=1}^B b_i$.
 
@@ -88,10 +130,14 @@ In each settlement period, a trader may send multiple actual transactions. For t
 - Traders who provide token Y will receive $\displaystyle \frac{b_i}{\beta} (x_0 + \alpha - x')$ units of token X.
 
 This method of trading is similar to the call auction process on the A-share market, where trades are not settled in real-time within the settlement period but instead a price is determined at the end of the period and all transactions are settled at this uniform price. Since the final settlement is still based on the constant product AMM (Automated Market Maker), any trader who successfully submits a transaction on-chain will secure a trade. We refer to this trading method as **Hyperbolic Call Auction**.
-### Description of Components:
+
+![alt text](Comparison.png)
+
+### Description of Components
 
 ![](Web/NoSandwichSwapPair_Web/src/assets/figure.png)
-### Tokenomics:
+
+### Tokenomics
 
 Since the trader who triggers settlement will have to pay more gas to complete the settlement and distribution, it is necessary to provide compensation. We stipulate that the initiator of the last transaction in each settlement cycle (i.e., the settlement trigger) will receive a reward in governance tokens. Here, we assume the governance token is \$SANDWICH.
 
@@ -100,9 +146,11 @@ This incentive mechanism encourages more users to participate in trading, as the
 The supply of \$SANDWICH follows an exponential decay model, with an initial supply of 10,000 SANDWICH per cycle and a half-life of 1 month.
 
 One potential issue is that MEV attackers can still manipulate transaction ordering to become the settlement trigger and claim governance tokens. However, this kind of MEV attack does not directly harm regular traders like previous MEV strategies did. On the other hand, as MEV attackers accumulate more \$SANDWICH tokens, their interests become aligned with the NoSandwichSwap protocol, forcing them to act as guardians of the protocol's ecosystem.
+
 ## Schedule
 
-### Key Milestones:
+### Key Milestones
+
 - First submission
 - Pre-demo
 - Testnet launch
@@ -115,14 +163,15 @@ One potential issue is that MEV attackers can still manipulate transaction order
 
 | Name     | Role          | GitHub / X Handle           |
 |----------|---------------|-----------------------------|
-| Artist Zhou | Product Manage| https://github.com/artistzhou    |
-| Jawk| Tool Developer      | https://github.com/jawkjiang   |
+| Treap| Product Manager  | https://github.com/TreapGoGo  |
+| Artist Zhou | Financial Mathematical Modeler | https://github.com/artistzhou    |
+| Jawk| Contract Developer      | https://github.com/jawkjiang   |
 | Fox（Qian Zhang） | Full Stack Engineer     | https://github.com/HappyFox001    |
-| SegmentOverflow| Contract Developer      | https://github.com/whusjj   |
-| Treap(leader)| Contract Developer     | https://github.com/TreapGoGo  |
+| SegmentOverflow| Architect      | https://github.com/whusjj   |
 |OwesTre|UI Designer     |https://github.com/XiiiijWhy   |
 
-### Background of Team Members:
+### Background of Team Members
+
 - Artist Zhou: President of ZJUBCA, INTJ
 - Treap(leader): President of WHU Web3 Club
 - Fox: Core builder of WHU Web3 Club
@@ -130,45 +179,12 @@ One potential issue is that MEV attackers can still manipulate transaction order
 - SegmentOverflow: Core builder of WHU Web3 Club
 - OwesTre: Core builder of WHU Web3 Club
 
-### Contact Information:
+### Contact Information
+
 - Artist Zhou: nevermorezxt@gmail.com
 - Jawk: 2919036369@qq.com 
 - Fox: 3591713733@qq.com
-- SegmentOverflow:2233586664@qq.com
+- SegmentOverflow: 2233586664@qq.com
 - Treap(leader): 1981315951@qq.com
 - OwesTre: JiayingChen_df016@outlook.com
-## Track and Bounty
 
-### Chosen Track:
-Category 2: (Hot) Smart Contract, DeFi, AI, Layer2, DePIN, etc.
-
-### Bounty Application:
-- Bifrost
-- Moonbeam
-- Blockchain for good
-
-## Mandatory Before Offline Demo
-
-1. **Demo Video**: [Link to YouTube video]
-2. **PPT**: [Link to Google Doc]
-
----
-## Quick Start
-
-```bash
-anvil --fork-url https://rpc.api.moonbase.moonbeam.network 
-```
-
-```
-source .env
-forge script script/DeployNoSandwichSwapPair.s.sol:DeployNoSandwichSwapPair --rpc-url http://127.0.0.1:8545 --private-key $ANVIL_PRIVATE_KEY --broadcast
-```
-
-```bash
-cd Web/NoSandwichSwapPair_Web
-npm run dev
-```
-
-```bash
-forge test --match-test "testTradeDex1|testTradeDex2" -vv
-```
