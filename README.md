@@ -55,10 +55,12 @@ forge test --match-test "testTradeDex1|testTradeDex2" -vv
 ## Features Planned for the Hackathon
 
 ### Current Status Before Hackathon
+
 - Derived a brand-new Anti-MEV AMM theory through mathematical proof.
 
 ### Features Planned for Hackathon
-- Implement the refined mathematical theory with a closed form of parity price and design tokenomics based on this theory.
+
+- Implemented the refined mathematical theory with a closed form of parity price and designed tokenomics based on this theory.
 
 ## Architecture
 
